@@ -12,19 +12,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.mercadopago.components.HeaderComponent
 import com.mercadopago.models.CreatePuestoModel
 import com.mercadopago.models.ServicioModel
 
-@Preview(showBackground = true)
 @Composable
-fun CrearPuestoView(){
+fun CrearPuestoView(navController: NavController){
     var puesto by remember { mutableStateOf(CreatePuestoModel()) }
     //informacion de puesto
     Column() {
-        HeaderComponent()
         Text(text = "INFORMACION DE PUESTO")
-        Row() {
+        Column () {
             OutlinedSelect(
                 listOf<String>("Disponible", "Ocupado"),
                 "Estado"
@@ -37,21 +36,21 @@ fun CrearPuestoView(){
 
         OutlinedTextField(
             value = puesto.descripcion, onValueChange = {
-                puesto.descripcion = it
+                puesto = puesto.copy(descripcion = it)
             }
         )
         Row() {
             OutlinedTextField(
                 value = puesto.areaM2.toString(),
                 onValueChange = {
-                    puesto.areaM2 = puesto.areaM2.toDouble()
+                    puesto = puesto.copy(areaM2 = it.toDouble())
                 }
             )
 
             OutlinedTextField(
                 value = puesto.precioBaseMensual.toString(),
                 onValueChange = {
-                    puesto.areaM2 = puesto.areaM2.toDouble()
+                    puesto = puesto.copy(precioBaseMensual = it.toDouble())
                 }
             )
         }
@@ -81,7 +80,9 @@ fun CrearPuestoView(){
                 Text("Crear")
             }
             Button(
-                onClick = {}
+                onClick = {
+                    navController.popBackStack()
+                }
             ) {
                 Text("Cancelar")
             }

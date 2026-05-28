@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.mercadopago.navigation.AppNavigation
 import com.mercadopago.ui.theme.MercadoPagoTheme
 import com.mercadopago.views.MiPerfilView
 
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MercadoPagoTheme {
-                MiPerfilView()
+                AppNavigation()
             }
         }
     }
