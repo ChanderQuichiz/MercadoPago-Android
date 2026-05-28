@@ -27,7 +27,7 @@ fun AppNavigation() {
         }
         composable(Screen.MiPerfil.route) { backStackEntry ->
         val userId = backStackEntry.arguments?.getString("userId")
-            MiPerfilView(navController,userId.toString())
+         MiPerfilView(navController,userId.toString())
         }
         composable(Screen.CrearPuesto.route) {
             CrearPuestoView(navController)

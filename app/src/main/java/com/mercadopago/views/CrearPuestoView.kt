@@ -11,9 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import com.mercadopago.components.HeaderComponent
 import com.mercadopago.models.CreatePuestoModel
 import com.mercadopago.models.ServicioModel
 
@@ -21,11 +19,11 @@ import com.mercadopago.models.ServicioModel
 fun CrearPuestoView(navController: NavController){
     var puesto by remember { mutableStateOf(CreatePuestoModel()) }
     //informacion de puesto
-    Column() {
+    Column {
         Text(text = "INFORMACION DE PUESTO")
-        Column () {
+        Column {
             OutlinedSelect(
-                listOf<String>("Disponible", "Ocupado"),
+                listOf("Disponible", "Ocupado"),
                 "Estado"
             )
             OutlinedSelect(
@@ -39,7 +37,7 @@ fun CrearPuestoView(navController: NavController){
                 puesto = puesto.copy(descripcion = it)
             }
         )
-        Row() {
+        Row {
             OutlinedTextField(
                 value = puesto.areaM2.toString(),
                 onValueChange = {
@@ -60,12 +58,12 @@ fun CrearPuestoView(navController: NavController){
         //informacion de puesto - fin
 
         //Servicios asignados - inicio
-        var servicios: List<ServicioModel> = listOf<ServicioModel>()
-        Column() {
+        var servicios: List<ServicioModel> = listOf()
+        Column {
             servicios.forEach { servicio ->
-                Row() {
+                Row {
                     Text(servicio.descripcion)
-                    Text("$/${servicio.precioMensual.toString()} x mes")
+                    Text("$/${servicio.precioMensual} x mes")
                 }
 
             }
@@ -73,7 +71,7 @@ fun CrearPuestoView(navController: NavController){
         }
 
         //Servicios asignados - fin
-        Row() {
+        Row {
             Button(
                 onClick = {}
             ) {
