@@ -2,7 +2,6 @@ package com.mercadopago.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,14 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -46,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mercadopago.R
-import com.mercadopago.navigation.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -124,12 +119,12 @@ fun DetailedDrawer(
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                     NavigationDrawerItem(
                         label = {
-                            Row() {
+                            Row {
                                 Image(painter = painterResource(id = R.drawable.perfil)
                                     , contentDescription = "",
                                     modifier = Modifier.size(60.dp)
                                 )
-                                Column() {
+                                Column {
                                     Text("Luis alexander",
                                         fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght)))
                                     Text("SOCIO",
@@ -178,7 +173,7 @@ fun DetailedDrawer(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("${navController.currentBackStackEntry?.destination?.route?.split("/")[0]}",
+                    title = { Text(navController.currentBackStackEntry?.destination?.route?.split("/")[0].toString(),
                         fontFamily = FontFamily(Font(R.font
                             .changa_medium))
                    , fontSize = 26.sp,

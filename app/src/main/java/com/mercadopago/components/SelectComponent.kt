@@ -1,9 +1,8 @@
-import androidx.compose.foundation.layout.fillMaxWidth
+package com.mercadopago.components
+
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
-
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -18,7 +17,8 @@ import androidx.compose.ui.Modifier
 @Composable
 fun OutlinedSelect(
     options: List<String>,
-    label: String
+    label: String,
+    modifier: Modifier
 ) {
 
 
@@ -28,7 +28,7 @@ fun OutlinedSelect(
     }
 
     var selectedOption by remember {
-        mutableStateOf(options[0])
+        mutableStateOf("")
     }
 
     ExposedDropdownMenuBox(
@@ -38,22 +38,23 @@ fun OutlinedSelect(
         }
     ) {
 
-        OutlinedTextField(
-            value = selectedOption,
-            onValueChange = {},
-            readOnly = true,
-            label = {
-                Text(label)
-            },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
-                )
-            },
-            modifier = Modifier
-                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                .fillMaxWidth()
-        )
+            OutlinedTextField(
+                value = selectedOption,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = expanded
+                    )
+                },
+
+                modifier = modifier,
+                placeholder = {
+                    Text(label
+                    )
+                }
+            )
+
 
         ExposedDropdownMenu(
             expanded = expanded,
