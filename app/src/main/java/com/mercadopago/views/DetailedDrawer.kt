@@ -1,16 +1,20 @@
 package com.mercadopago.views
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -26,14 +30,26 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.mercadopago.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailedDrawer(
+    navController: NavController,
     content: @Composable (PaddingValues) -> Unit
+
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -43,40 +59,111 @@ fun DetailedDrawer(
             ModalDrawerSheet {
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp)
-                        .verticalScroll(rememberScrollState())
-                ) {
+                        .verticalScroll(rememberScrollState()),
+
+                    ) {
                     Spacer(Modifier.height(12.dp))
-                    Text("Drawer Title", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge)
+                    Text("MERCADOPAGO", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge,
+                        fontFamily = FontFamily(Font(R.font.changa_medium)),
+                        color = Color(0XFF35C0AB),
+                        fontWeight = FontWeight.ExtraBold
+                        , letterSpacing = 1.sp
+                    )
                     HorizontalDivider()
 
-                    Text("Section 1", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
+
                     NavigationDrawerItem(
-                        label = { Text("Item 1") },
+                        label = { Text("Reportes") },
                         selected = false,
                         onClick = { /* Handle click */ }
                     )
                     NavigationDrawerItem(
-                        label = { Text("Item 2") },
+                        label = { Text("Servicios") },
                         selected = false,
                         onClick = { /* Handle click */ }
                     )
+                    NavigationDrawerItem(
+                        label = {
+
+                            Text("Puestos")
+
+
+                        },
+                        selected = false,
+                        onClick = {
+                            navController.navigate("puestos")
+                        }
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Deudas") },
+                        selected = false,
+                        onClick = { /* Handle click */ }
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Solicitudes") },
+                        selected = false,
+                        onClick = { /* Handle click */ }
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Contratos") },
+                        selected = false,
+                        onClick = { /* Handle click */ }
+                    )
+                    NavigationDrawerItem(
+                        label = { Text("Socios") },
+                        selected = false,
+                        onClick = { navController.navigate("socios") }
+                    )
+
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    NavigationDrawerItem(
+                        label = {
+                            Row {
+                                Image(painter = painterResource(id = R.drawable.perfil)
+                                    , contentDescription = "",
+                                    modifier = Modifier.size(60.dp)
+                                )
+                                Column {
+                                    Text("Luis alexander",
+                                        fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght)))
+                                    Text("SOCIO",
+                                        color = Color(0XFF35C0AB),
+                                        fontFamily = FontFamily(Font(R.font.changa_medium))
+                                    )
+                                }
+                            }
 
-                    Text("Section 2", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
-                    NavigationDrawerItem(
-                        label = { Text("Settings") },
+
+                        },
                         selected = false,
-                        icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
-                        badge = { Text("20") }, // Placeholder
-                        onClick = { /* Handle click */ }
+                        onClick = {
+                            navController.navigate("mi-perfil/1")
+                        }
                     )
-                    NavigationDrawerItem(
-                        label = { Text("Help and feedback") },
-                        selected = false,
-                        icon = { Icon(Icons.AutoMirrored.Outlined.Help, contentDescription = null) },
-                        onClick = { /* Handle click */ },
-                    )
+
+                    Column(
+
+                        horizontalAlignment = Alignment.CenterHorizontally
+                        , modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        NavigationDrawerItem(
+                            label = { Text("Cerrar sesion",
+                                color = Color(0XFFE12F2F),
+                                fontFamily = FontFamily(Font(R.font.sansationbold)),
+                                modifier = Modifier.fillMaxWidth()
+                                , textAlign = TextAlign.Center
+                            ) },
+                            selected = false,
+                            onClick = { /* Handle click */ },
+                            modifier = Modifier.background(Color(0XFFDDDDDD), RoundedCornerShape(30.dp))
+                                .height(40.dp)
+                                .fillMaxWidth(0.8f)
+                        )
+
+                    }
+
                     Spacer(Modifier.height(12.dp))
                 }
             }
@@ -86,7 +173,12 @@ fun DetailedDrawer(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Navigation Drawer Example") },
+                    title = { Text(navController.currentBackStackEntry?.destination?.route?.split("/")[0].toString(),
+                        fontFamily = FontFamily(Font(R.font
+                            .changa_medium))
+                        , fontSize = 26.sp,
+                        fontWeight = FontWeight.Light
+                    )},
                     navigationIcon = {
                         IconButton(onClick = {
                             scope.launch {
