@@ -50,7 +50,7 @@ fun DetailedDrawer(
     navController: NavController,
     content: @Composable (PaddingValues) -> Unit
 
-    ) {
+) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -61,14 +61,14 @@ fun DetailedDrawer(
                     modifier = Modifier.padding(horizontal = 16.dp)
                         .verticalScroll(rememberScrollState()),
 
-                ) {
+                    ) {
                     Spacer(Modifier.height(12.dp))
                     Text("MERCADOPAGO", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge,
                         fontFamily = FontFamily(Font(R.font.changa_medium)),
                         color = Color(0XFF35C0AB),
                         fontWeight = FontWeight.ExtraBold
                         , letterSpacing = 1.sp
-                        )
+                    )
                     HorizontalDivider()
 
 
@@ -85,10 +85,10 @@ fun DetailedDrawer(
                     NavigationDrawerItem(
                         label = {
 
-                                Text("Puestos")
+                            Text("Puestos")
 
 
-                             },
+                        },
                         selected = false,
                         onClick = {
                             navController.navigate("puestos")
@@ -112,7 +112,7 @@ fun DetailedDrawer(
                     NavigationDrawerItem(
                         label = { Text("Socios") },
                         selected = false,
-                        onClick = { /* Handle click */ }
+                        onClick = { navController.navigate("socios") }
                     )
 
 
@@ -176,7 +176,7 @@ fun DetailedDrawer(
                     title = { Text(navController.currentBackStackEntry?.destination?.route?.split("/")[0].toString(),
                         fontFamily = FontFamily(Font(R.font
                             .changa_medium))
-                   , fontSize = 26.sp,
+                        , fontSize = 26.sp,
                         fontWeight = FontWeight.Light
                     )},
                     navigationIcon = {

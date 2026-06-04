@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mercadopago.R
-
 @Composable
 fun MiPerfilView(navController : NavController,userId: String ){
     DetailedDrawer(navController) { padding ->
