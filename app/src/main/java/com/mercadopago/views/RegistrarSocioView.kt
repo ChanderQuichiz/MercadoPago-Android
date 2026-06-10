@@ -1,201 +1,135 @@
 package com.mercadopago.views
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.mercadopago.R
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrarSocioView(
-    onNavigateToLogin: () -> Unit,
-    onRegisterSuccess: () -> Unit
-) {
-    // Variables de estado para retener el texto de cada input del formulario
-    var nombresApellidos by remember { mutableStateOf("") }
+fun RegistrarSocioView(navController: NavController) {
+    var nombres by remember { mutableStateOf("") }
     var dni by remember { mutableStateOf("") }
     var telefono by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
-    val primaryColor = Color(0xFF00C1A2)
-    val backgroundColor = Color(0xFFE5E5E5)
-    val textGray = Color(0xFF8E8E93)
+    var contrasena by remember { mutableStateOf("") }
+    var confirmarContrasena by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
-            .padding(16.dp),
+            .background(Color(0xFFF5F5F5)),
         contentAlignment = Alignment.Center
     ) {
-        Card(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .verticalScroll(rememberScrollState()),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
+
+            Row(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
+                TextButton(onClick = { navController.popBackStack() }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.flechaatras),
+                        contentDescription = "Volver",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Volver al inicio de sesión",
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text("CREAR CUENTA SOCIO", fontSize = 12.sp, color = Color.Gray, fontWeight = FontWeight.Bold, fontFamily = FontFamily(Font(R.font.changa_medium)))
+            Text("MERCADOPAGO", fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily(Font(R.font.changa_medium)))
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                    .fillMaxWidth(0.92f)
+                    .background(Color.White, RoundedCornerShape(30.dp))
+                    .padding(25.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onNavigateToLogin() }
-                        .padding(vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Volver",
-                        tint = textGray,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Volver al inicio de sesión", color = textGray, fontSize = 12.sp)
-                }
-
+                CustomOutlinedTextField(value = nombres, label = "Nombres y apellidos *") { nombres = it }
                 Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = "CREAR CUENTA SOCIO",
-                    fontSize = 11.sp,
-                    color = textGray,
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = 1.sp
-                )
-
-                Spacer(modifier = Modifier.height(2.dp))
-
-                Text(text = "MERCADOPAGO", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1A1A1A))
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                // Input 1: Nombres y Apellidos
-                OutlinedTextField(
-                    value = nombresApellidos,
-                    onValueChange = { nombresApellidos = it },
-                    label = { Text("Nombres y apellidos *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = primaryColor, focusedLabelColor = primaryColor)
-                )
-
+                CustomOutlinedTextField(value = dni, label = "DNI *") { dni = it }
                 Spacer(modifier = Modifier.height(12.dp))
-
-                // Input 2: DNI con teclado numérico obligado
-                OutlinedTextField(
-                    value = dni,
-                    onValueChange = { dni = it },
-                    label = { Text("DNI *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), // Teclado numérico sin letras
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = primaryColor, focusedLabelColor = primaryColor)
-                )
-
+                CustomOutlinedTextField(value = telefono, label = "Teléfono *") { telefono = it }
                 Spacer(modifier = Modifier.height(12.dp))
-
-                // Input 3: Teléfono con teclado telefónico
-                OutlinedTextField(
-                    value = telefono,
-                    onValueChange = { telefono = it },
-                    label = { Text("Teléfono *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), // Teclado numérico especial para llamadas
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = primaryColor, focusedLabelColor = primaryColor)
-                )
-
+                CustomOutlinedTextField(value = email, label = "Email *") { email = it }
                 Spacer(modifier = Modifier.height(12.dp))
-
-                // Input 4: Correo Electrónico
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = primaryColor, focusedLabelColor = primaryColor)
-                )
-
+                CustomOutlinedTextField(value = contrasena, label = "Contraseña *", isPassword = true) { contrasena = it }
                 Spacer(modifier = Modifier.height(12.dp))
+                CustomOutlinedTextField(value = confirmarContrasena, label = "Confirmar contraseña *", isPassword = true) { confirmarContrasena = it }
 
-                // Input 5: Contraseña enmascarada
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Contraseña *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = primaryColor, focusedLabelColor = primaryColor)
-                )
+                Spacer(modifier = Modifier.height(25.dp))
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Input 6: Confirmación de contraseña enmascarada
-                OutlinedTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    label = { Text("Confirmar contraseña *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = primaryColor, focusedLabelColor = primaryColor)
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                // Botón final para ejecutar la acción de creación de cuenta
                 Button(
-                    onClick = { onRegisterSuccess() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
+                    onClick = { navController.navigate("login-socio") },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF35C0AB)),
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    shape = RoundedCornerShape(25.dp)
                 ) {
-                    Text(text = "REGISTRARSE", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text("REGISTRARSE", fontSize = 18.sp, fontFamily = FontFamily(Font(R.font.changa_medium)))
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "Tu solicitud de membresía quedará pendiente de revisión por la administración.",
-                    color = textGray,
-                    fontSize = 11.sp,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 14.sp
-                )
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "Tu solicitud de membresía quedará pendiente de revisión por la administración.",
+                modifier = Modifier.padding(horizontal = 30.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 11.sp,
+                color = Color.Gray,
+                fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
+            )
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
+}
+
+@Composable
+fun CustomOutlinedTextField(value: String, label: String, isPassword: Boolean = false, onValueChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text(label, fontSize = 14.sp, fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))) },
+        shape = RoundedCornerShape(12.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = Color.LightGray,
+            focusedBorderColor = Color(0xFF35C0AB),
+            unfocusedContainerColor = Color(0XFFFCFAFA)
+        ),
+        singleLine = true,
+        visualTransformation = if (isPassword) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None
+    )
 }
