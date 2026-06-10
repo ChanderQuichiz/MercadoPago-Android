@@ -10,14 +10,19 @@ import com.mercadopago.views.MiPerfilView
 import com.mercadopago.views.PuestosView
 import com.mercadopago.views.MisSolicitudesView
 import com.mercadopago.views.SociosView
+import com.mercadopago.views.LoginSocioView
+import com.mercadopago.views.RegistrarSocioView
+import com.mercadopago.views.DeudasAdminView
 
 @Composable
 fun AppNavigation() {
-    val navController = rememberNavController()   //  Controlador de navegación
+    val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = Screen.MisSolicitudes.route     // Primera pantalla
+        startDestination = "login-socio"
+        //startDestination = Screen.Login.route
+        //startDestination = Screen.MisSolicitudes.route
     ) {
         composable(Screen.Login.route) {
             LoginAdminView(navController)
@@ -27,7 +32,7 @@ fun AppNavigation() {
         }
         composable(Screen.MiPerfil.route) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
-            MiPerfilView(navController,userId.toString())
+            MiPerfilView(navController, userId.toString())
         }
         composable(Screen.CrearPuesto.route) {
             CrearPuestoView(navController)
@@ -37,6 +42,15 @@ fun AppNavigation() {
         }
         composable(Screen.Socios.route) {
             SociosView(navController)
+        }
+        composable("login-socio") {
+            LoginSocioView(navController)
+        }
+        composable("registrar-socio") {
+            RegistrarSocioView(navController)
+        }
+        composable("deudas-admin") {
+            DeudasAdminView(navController)
         }
     }
 }
