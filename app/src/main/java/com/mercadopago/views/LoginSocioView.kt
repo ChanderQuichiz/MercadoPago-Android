@@ -1,14 +1,18 @@
 package com.mercadopago.views
 
-import androidx.compose.foundation.Image
+import android.graphics.drawable.Icon
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Accessibility
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Storefront
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,98 +21,165 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mercadopago.R
 
 @Composable
-fun LoginSocioView(navController: NavController) {
-    var passwordVisible by remember { mutableStateOf(false) }
+fun LoginSocioView(
+  navController: NavController
+) {
     var email by remember { mutableStateOf("") }
-    var contrasena by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFF5F5F5)),
-        contentAlignment = Alignment.Center
+    val primaryColor = Color(0xFF00C1A2)
+
+    Scaffold(
+        topBar = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                ,
+                horizontalAlignment = Alignment.End
+            ) {
+                Spacer(modifier =  Modifier.height(40.dp))
+                IconButton(
+                    onClick = {
+        navController.navigate("login")
+                    }
+                ) {
+                    Icon(Icons.Default.Settings,null)
+                }
+            }
+        }
     ) {
+            paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxWidth()
+                .padding(paddingValues ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
+        {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+            ,    horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(modifier = Modifier.height(80.dp))
+
             Surface(
-                color = Color(0xFF35C0AB),
-                shape = RoundedCornerShape(20.dp),
-                modifier = Modifier.padding(bottom = 20.dp)
+                modifier = Modifier.size(64.dp),
+                shape = RoundedCornerShape(50),
+                color = Color.White,
+                border = BorderStroke(2.dp, primaryColor)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Storefront, null)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = "PORTAL DEL SOCIO",
+                fontSize = 12.sp,
+                color = Color.Gray,
+                letterSpacing = 1.5.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = "MERCADOPAGO",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1A1A1A)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                placeholder = { Text("ejemplo@correo.com") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = primaryColor,
+                    unfocusedBorderColor = Color(0xFFE0E0E0),
+                    focusedLabelColor = primaryColor
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = primaryColor,
+                    unfocusedBorderColor = Color(0xFFE0E0E0),
+                    focusedLabelColor = primaryColor
+                )
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    navController.navigate("mis-solicitudes")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
             ) {
                 Text(
-                    text = "Acceso Socio",
+                    text = "ACCEDER",
                     color = Color.White,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
-                    fontSize = 12.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
 
-            Image(
-                painter = painterResource(id = R.drawable.admin_access),
-                contentDescription = null,
-                modifier = Modifier.size(60.dp)
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text("PORTAL DEL SOCIO", fontSize = 11.sp, color = Color.Gray, fontWeight = FontWeight.Bold)
-            Text("MERCADOPAGO", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(24.dp))
 
-            Spacer(modifier = Modifier.height(30.dp))
-
-            CustomOutlinedTextField(value = email, label = "Email") { email = it }
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            OutlinedTextField(
-                value = contrasena,
-                onValueChange = { contrasena = it },
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Contraseña", fontSize = 14.sp) },
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedBorderColor = Color.LightGray,
-                    focusedBorderColor = Color(0xFF35C0AB)
-                ),
-                singleLine = true,
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff, contentDescription = null)
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Button(
-                onClick = { navController.navigate("deudas-admin") },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF35C0AB)),
-                modifier = Modifier.fillMaxWidth().height(50.dp),
-                shape = RoundedCornerShape(25.dp)
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("ACCEDER", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(text = "¿No tenés cuenta? ", color = Color.Gray, fontSize = 14.sp)
+                TextButton(
+                    onClick = {
+                        navController.navigate("registro-socio")
+                    },
+                    contentPadding = PaddingValues(0.dp),
+                    modifier = Modifier.height(40.dp)
+                ) {
+                    Text(
+                        text = "Registrarte como Socio",
+                        color = primaryColor,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+        }
 
-            TextButton(onClick = { navController.navigate("registrar-socio") }) {
-                Text("¿No tenés cuenta? Registrate como Socio", color = Color(0xFF35C0AB), fontSize = 13.sp)
-            }
+
         }
     }
+
 }

@@ -17,51 +17,71 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mercadopago.R
 
+
+@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrarSocioView(navController: NavController) {
-    var nombres by remember { mutableStateOf("") }
+fun RegistrarSocioView(
+ navController: NavController
+) {
+    // Variables de estado para retener el texto de cada input del formulario
+    var nombresApellidos by remember { mutableStateOf("") }
     var dni by remember { mutableStateOf("") }
     var telefono by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var contrasena by remember { mutableStateOf("") }
-    var confirmarContrasena by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFF5F5F5)),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+    val primaryColor = Color(0xFF00C1A2)
+    val textGray = Color(0xFF8E8E93)
 
-            Row(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
-                TextButton(onClick = { navController.popBackStack() }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.flechaatras),
-                        contentDescription = "Volver",
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "Volver al inicio de sesión",
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
-                    )
+    Scaffold (
+        topBar = {
+            Column() {
+                Spacer(modifier = Modifier.height(40.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                )
+                {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver",
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Volver al inicio de sesión", fontSize = 12.sp)
                 }
             }
+
+        }
+    ) {
+        paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -92,10 +112,14 @@ fun RegistrarSocioView(navController: NavController) {
                 Spacer(modifier = Modifier.height(25.dp))
 
                 Button(
-                    onClick = { navController.navigate("login-socio") },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF35C0AB)),
-                    modifier = Modifier.fillMaxWidth().height(50.dp),
-                    shape = RoundedCornerShape(25.dp)
+                    onClick = {
+                        // navController.popBackStack()
+                              },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
                 ) {
                     Text("REGISTRARSE", fontSize = 18.sp, fontFamily = FontFamily(Font(R.font.changa_medium)))
                 }
