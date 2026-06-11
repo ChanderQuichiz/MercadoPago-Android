@@ -12,10 +12,13 @@ import com.mercadopago.views.PuestosView
 import com.mercadopago.views.MisSolicitudesView
 import com.mercadopago.views.RegistrarSocioView
 import com.mercadopago.views.SociosView
+import com.mercadopago.views.LoginSocioView
+import com.mercadopago.views.RegistrarSocioView
+import com.mercadopago.views.DeudasAdminView
 
 @Composable
 fun AppNavigation() {
-    val navController = rememberNavController()   //  Controlador de navegación
+    val navController = rememberNavController()
 
     NavHost(
         navController = navController,
@@ -29,7 +32,7 @@ fun AppNavigation() {
         }
         composable(Screen.MiPerfil.route) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
-            MiPerfilView(navController,userId.toString())
+            MiPerfilView(navController, userId.toString())
         }
         composable(Screen.CrearPuesto.route) {
             CrearPuestoView(navController)
