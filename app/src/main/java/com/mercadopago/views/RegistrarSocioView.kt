@@ -18,15 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 
+@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrarSocioView(
-    onNavigateToLogin: () -> Unit,
-    onRegisterSuccess: () -> Unit
+ navController: NavController
 ) {
     // Variables de estado para retener el texto de cada input del formulario
     var nombresApellidos by remember { mutableStateOf("") }
@@ -37,24 +39,42 @@ fun RegistrarSocioView(
     var confirmPassword by remember { mutableStateOf("") }
 
     val primaryColor = Color(0xFF00C1A2)
-    val backgroundColor = Color(0xFFE5E5E5)
     val textGray = Color(0xFF8E8E93)
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+    Scaffold (
+        topBar = {
+            Column() {
+                Spacer(modifier = Modifier.height(40.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                )
+                {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver",
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Volver al inicio de sesión", fontSize = 12.sp)
+                }
+            }
+
+        }
     ) {
-        Card(
+        paddingValues ->
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .verticalScroll(rememberScrollState()),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                .padding(paddingValues)
         ) {
             Column(
                 modifier = Modifier
@@ -62,22 +82,7 @@ fun RegistrarSocioView(
                     .padding(horizontal = 24.dp, vertical = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onNavigateToLogin() }
-                        .padding(vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Volver",
-                        tint = textGray,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Volver al inicio de sesión", color = textGray, fontSize = 12.sp)
-                }
+
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -176,7 +181,9 @@ fun RegistrarSocioView(
 
                 // Botón final para ejecutar la acción de creación de cuenta
                 Button(
-                    onClick = { onRegisterSuccess() },
+                    onClick = {
+                        // navController.popBackStack()
+                              },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),

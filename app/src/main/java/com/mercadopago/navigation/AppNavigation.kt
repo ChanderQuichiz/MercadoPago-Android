@@ -6,9 +6,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mercadopago.views.CrearPuestoView
 import com.mercadopago.views.LoginAdminView
+import com.mercadopago.views.LoginSocioView
 import com.mercadopago.views.MiPerfilView
 import com.mercadopago.views.PuestosView
 import com.mercadopago.views.MisSolicitudesView
+import com.mercadopago.views.RegistrarSocioView
 import com.mercadopago.views.SociosView
 
 @Composable
@@ -17,7 +19,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.MisSolicitudes.route     // Primera pantalla
+        startDestination = Screen.LoginSocio.route     // Primera pantalla
     ) {
         composable(Screen.Login.route) {
             LoginAdminView(navController)
@@ -38,5 +40,11 @@ fun AppNavigation() {
         composable(Screen.Socios.route) {
             SociosView(navController)
         }
+        composable(Screen.LoginSocio.route) {
+            LoginSocioView(navController)
+        }
+        composable(Screen.RegistroSocio.route) {
+            RegistrarSocioView(navController)
+        }
     }
-}
+    }
