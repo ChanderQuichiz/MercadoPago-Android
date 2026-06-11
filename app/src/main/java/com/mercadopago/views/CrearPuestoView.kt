@@ -40,7 +40,6 @@ fun CrearPuestoView(
     navController: NavController
 ){
     var puesto by remember { mutableStateOf(CreatePuestoModel()) }
-    //informacion de puesto
     Column(modifier = Modifier.fillMaxSize()
         .padding(30.dp,0.dp)) {
         Spacer(modifier = Modifier.height(50.dp))
@@ -162,7 +161,6 @@ fun CrearPuestoView(
 
         }
 
-        //Servicios asignados - fin
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End

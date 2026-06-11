@@ -1,12 +1,14 @@
 package com.mercadopago.navigation
-
 sealed class Screen(val route: String) {
-    object Login    : Screen("login")
-    object MiPerfil : Screen("mi-perfil/{userId}")
-    object Puestos  : Screen("puestos")
-    object CrearPuesto : Screen("crear-puesto")
-    object MisSolicitudes : Screen("mis-solicitudes")
-    object Socios : Screen("socios")
-    object LoginSocio : Screen("login-socio")
-    object RegistroSocio: Screen("registro-socio")
+
+    object Splash : Screen("Splash")
+    object Login          : Screen("Login")
+    object LoginSocio : Screen("Login Socio")
+    object MiPerfil       : Screen("Mi Perfil/{userId}")
+    object Puestos        : Screen("Mis Puestos")
+    object Deudas : Screen("Mis Deudas")
+    object ConfirmarPago : Screen("Confirmar Pago")
+    object CrearPuesto    : Screen("Crear Puesto")
+    object MisSolicitudes : Screen("Mis Solicitudes")
+    object Socios         : Screen("Socios")
 }

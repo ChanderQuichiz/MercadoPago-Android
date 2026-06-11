@@ -18,16 +18,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrarSocioView(
-    navController: NavController
+    onNavigateToLogin: () -> Unit,
+    onRegisterSuccess: () -> Unit
 ) {
     // Variables de estado para retener el texto de cada input del formulario
     var nombresApellidos by remember { mutableStateOf("") }
@@ -41,38 +40,21 @@ fun RegistrarSocioView(
     val backgroundColor = Color(0xFFE5E5E5)
     val textGray = Color(0xFF8E8E93)
 
-    Scaffold(
-        topBar = {
-            Column() {
-                Spacer(modifier =Modifier.height(40.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                )
-                {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver",
-                            tint = textGray,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Volver al inicio de sesión", color = textGray, fontSize = 12.sp)
-                }
-            }
-        }
-    ) {paddingValues ->
-        Column(
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(paddingValues)
-
+                .wrapContentHeight()
+                .verticalScroll(rememberScrollState()),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -80,7 +62,22 @@ fun RegistrarSocioView(
                     .padding(horizontal = 24.dp, vertical = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onNavigateToLogin() }
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Volver",
+                        tint = textGray,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Volver al inicio de sesión", color = textGray, fontSize = 12.sp)
+                }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -179,9 +176,7 @@ fun RegistrarSocioView(
 
                 // Botón final para ejecutar la acción de creación de cuenta
                 Button(
-                    onClick = {
-                        navController.popBackStack()
-                    },
+                    onClick = { onRegisterSuccess() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
