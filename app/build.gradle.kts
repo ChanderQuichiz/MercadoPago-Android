@@ -56,6 +56,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.0")
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.play.services.cast.framework)
 
 
     testImplementation(libs.junit)
@@ -65,4 +66,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    //
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
 }
