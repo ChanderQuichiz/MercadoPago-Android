@@ -15,12 +15,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.mercadopago.models.ServicioModel
 
 
 @Composable
 fun ServicioCard(
-    servicio: ServicioModel
+    servicio: ServicioModel,
+    navController: NavController
 ) {
     Card(
         modifier = Modifier

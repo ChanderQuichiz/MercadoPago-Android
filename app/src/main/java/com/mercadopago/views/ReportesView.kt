@@ -28,7 +28,7 @@ import com.mercadopago.models.ReporteModel
 
 @Composable
 fun ReportesView(
-    navController: NavController? = null
+    navController: NavController
 ) {
     val reportes = List(5) {
         ReporteModel(
@@ -39,125 +39,114 @@ fun ReportesView(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 38.dp, vertical = 52.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "Menú",
-                modifier = Modifier.size(34.dp)
-            )
+    DetailedDrawer (navController) {
 
-            Spacer(modifier = Modifier.width(24.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 26.dp, vertical = 0.dp)
+
+
+        )
+        {
+
+            Spacer(modifier = Modifier.height(22.dp))
 
             Text(
-                text = "Reportes",
-                fontSize = 34.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace,
-                letterSpacing = 5.sp
+                text = "Reportes e informes del sistema",
+                fontSize = 16.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-        }
 
-        Spacer(modifier = Modifier.height(22.dp))
+            Spacer(modifier = Modifier.height(62.dp))
 
-        Text(
-            text = "Reportes e informes del sistema",
-            fontSize = 16.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = "REPORTE CAJA DIARIO",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
 
-        Spacer(modifier = Modifier.height(62.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column {
-                Text(
-                    text = "REPORTE CAJA DIARIO",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                    OutlinedTextField(
+                        value = "",
+                        onValueChange = {},
+                        placeholder = {
+                            Text(
+                                text = "dd/mm/aaaa",
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.DateRange,
+                                contentDescription = "Fecha",
+                                modifier = Modifier.size(30.dp)
+                            )
+                        },
+                        modifier = Modifier
+                            .width(170.dp)
+                            .height(58.dp),
+                        shape = RoundedCornerShape(9.dp),
+                        singleLine = true
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    placeholder = {
-                        Text(
-                            text = "dd/mm/aaaa",
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Fecha",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    },
+                Card(
                     modifier = Modifier
-                        .width(170.dp)
-                        .height(58.dp),
-                    shape = RoundedCornerShape(9.dp),
-                    singleLine = true
-                )
+                        .width(190.dp)
+                        .height(94.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    border = BorderStroke(1.dp, Color.Black),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF27D3BE)
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "TOTAL",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Text(
+                            text = "S/54260.00",
+                            color = Color.White,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace,
+                            letterSpacing = 2.sp
+                        )
+                    }
+                }
             }
 
-            Card(
-                modifier = Modifier
-                    .width(190.dp)
-                    .height(94.dp),
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(1.dp, Color.Black),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFF27D3BE)
-                )
+            Spacer(modifier = Modifier.height(58.dp))
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(34.dp)
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "TOTAL",
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        text = "S/54260.00",
-                        color = Color.White,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace,
-                        letterSpacing = 2.sp
-                    )
+                items(reportes) { item ->
+                    ReporteCard(item = item)
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(58.dp))
-
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(34.dp)
-        ) {
-            items(reportes) { item ->
-                ReporteCard(item = item)
-            }
-        }
     }
+
+
 }

@@ -3,8 +3,12 @@ package com.mercadopago.views
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,35 +25,61 @@ import com.mercadopago.components.ServicioChip
 
 @Composable
 fun EnviarSolicitudView(
-    navController: NavController? = null
+    navController: NavController
 ) {
     var mensaje by remember { mutableStateOf("") }
+Scaffold(
+    topBar = {
+        Column() {
+            Spacer(modifier = Modifier.height(40.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
 
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Menú",
+                        modifier = Modifier.size(26.dp)
+                    )
+
+                }
+
+                Spacer(modifier = Modifier.width(28.dp))
+
+                Text(
+                    text = "Enviar Solicitud",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                    letterSpacing = 2.sp
+                )
+            }
+        }
+
+
+    }
+) { paddingValues ->
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 40.dp, vertical = 52.dp)
+            .padding(paddingValues)
+            .verticalScroll(rememberScrollState())
+        ,
+        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
+        Column(
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxSize(0.8f)
+
+        ,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "Menú",
-                modifier = Modifier.size(32.dp)
-            )
-
-            Spacer(modifier = Modifier.width(28.dp))
-
-            Text(
-                text = "Enviar Solicitud",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace,
-                letterSpacing = 3.sp
-            )
-        }
 
         Spacer(modifier = Modifier.height(42.dp))
 
@@ -232,6 +262,7 @@ fun EnviarSolicitudView(
                     letterSpacing = 1.5.sp
                 )
             }
-        }
+        }}
     }
+}
 }

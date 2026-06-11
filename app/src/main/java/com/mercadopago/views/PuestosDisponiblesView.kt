@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -26,7 +27,7 @@ import com.mercadopago.models.ServicioModel
 
 @Composable
 fun PuestosDisponiblesView(
-    navController: NavController? = null
+    navController: NavController
 ) {
     val puestos = listOf(
         PuestoCardModel(
@@ -86,56 +87,32 @@ fun PuestosDisponiblesView(
             )
         )
     )
-
+DetailedDrawer(
+    navController
+) {
+    paddingValues ->
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 34.dp, vertical = 52.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "Menú",
-                modifier = Modifier.size(32.dp)
-            )
+    )
+    {
 
-            Spacer(modifier = Modifier.width(28.dp))
 
-            Text(
-                text = "Puestos Disponibles",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace,
-                letterSpacing = 3.sp
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Text(
-            text = "Explora los puestos disponibles y enviá una solicitud",
-            fontSize = 16.sp,
-            modifier = Modifier.padding(start = 60.dp)
-        )
 
         Spacer(modifier = Modifier.height(56.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        ) {
+        )
+        {
             OutlinedButton(
                 onClick = { },
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(1.dp, Color.Gray),
                 modifier = Modifier
-                    .width(245.dp)
+                    .width(226.dp)
                     .height(48.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = Color.Black
@@ -169,7 +146,7 @@ fun PuestosDisponiblesView(
                 )
             ) {
                 Text(
-                    text = "Crear",
+                    text = "Filtrar",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 2.sp
@@ -177,14 +154,16 @@ fun PuestosDisponiblesView(
             }
         }
 
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(38.dp)
         ) {
             items(puestos) { puesto ->
-                PuestoCard(puesto = puesto)
+                PuestoCard(puesto = puesto, navController)
             }
         }
     }
+}
+
 }

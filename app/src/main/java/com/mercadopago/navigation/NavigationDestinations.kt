@@ -6,4 +6,5 @@ sealed interface Destino {
     object Registro : Destino // Ruta del formulario de registro
     object Deudas : Destino   // Ruta de la pantalla de deudas
     object Perfil : Destino   // Ruta del perfil de usuario
+
 }

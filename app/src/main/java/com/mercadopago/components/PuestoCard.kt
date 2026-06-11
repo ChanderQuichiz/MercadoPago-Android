@@ -15,11 +15,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.mercadopago.models.PuestoCardModel
 
 @Composable
 fun PuestoCard(
-    puesto: PuestoCardModel
+    puesto: PuestoCardModel,
+    navController: NavController
 ) {
     Card(
         modifier = Modifier
@@ -157,7 +159,9 @@ fun PuestoCard(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         OutlinedButton(
-                            onClick = { },
+                            onClick = {
+                                navController.navigate("enviar-solicitud")
+                            },
                             shape = RoundedCornerShape(50),
                             border = BorderStroke(1.dp, Color(0xFF27D3BE)),
                             colors = ButtonDefaults.outlinedButtonColors(

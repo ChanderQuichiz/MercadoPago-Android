@@ -75,12 +75,12 @@ fun DetailedDrawer(
                     NavigationDrawerItem(
                         label = { Text("Reportes") },
                         selected = false,
-                        onClick = { /* Handle click */ }
+                        onClick = { navController.navigate("reportes") }
                     )
                     NavigationDrawerItem(
                         label = { Text("Servicios") },
                         selected = false,
-                        onClick = { /* Handle click */ }
+                        onClick = { navController.navigate("servicios") }
                     )
                     NavigationDrawerItem(
                         label = {
@@ -97,7 +97,7 @@ fun DetailedDrawer(
                     NavigationDrawerItem(
                         label = { Text("Deudas") },
                         selected = false,
-                        onClick = { /* Handle click */ }
+                        onClick = { navController.navigate("deudas") }
                     )
                     NavigationDrawerItem(
                         label = { Text("Solicitudes") },
@@ -114,6 +114,17 @@ fun DetailedDrawer(
                         selected = false,
                         onClick = { navController.navigate("socios") }
                     )
+
+
+                    //SOCIOS DRAWABLE
+
+
+                    NavigationDrawerItem(
+                        label = { Text("Puestos Disponibles") },
+                        selected = false,
+                        onClick = { navController.navigate("puestos-disponibles") }
+                    )
+
 
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))

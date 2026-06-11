@@ -12,16 +12,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeudasAdminView(navController: NavController) {
+fun DeudasAdminView(
+navController: NavController
+
+) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf("Todas") }
     val filters = listOf("Todas", "Pendientes", "Pagadas")
+
+    DetailedDrawer(
+        navController
+    ) {
+
 
     Column(
         modifier = Modifier
@@ -29,17 +38,9 @@ fun DeudasAdminView(navController: NavController) {
             .background(Color(0xFFF5F5F5))
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.Menu, contentDescription = "Menu", modifier = Modifier.size(30.dp))
-            Spacer(modifier = Modifier.width(16.dp))
-            Text("Deudas", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-        }
+        Spacer(modifier = Modifier.height(50.dp))
 
-        Spacer(modifier = Modifier.height(10.dp))
+
         Text("Una deuda = un periodo mensual por puesto.", fontSize = 14.sp, color = Color.Gray)
         Text("Se generan automáticamente desde contratos activos.", fontSize = 14.sp, color = Color.Gray)
 
@@ -85,5 +86,5 @@ fun DeudasAdminView(navController: NavController) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text("No se encontraron deudas", color = Color.Gray)
         }
-    }
+    }}
 }
