@@ -23,23 +23,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MercadoPagoTheme {
-//                AppNavigation()
+           AppNavigation()
 
-                val navController = rememberNavController()
-
-//                CrearPuestoView(navController = navController)
-
-                //                PuestosView(navController = navController)
-
-//                CrearServicioView()
-
-//                ServiciosView(navController = navController)
-
-//                PuestosDisponiblesView(navController = navController)
-
-                EnviarSolicitudView()
-
-//                ReportesView()
             }
         }
     }

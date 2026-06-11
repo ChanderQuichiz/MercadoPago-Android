@@ -47,7 +47,9 @@ fun AppNavigation() {
             LoginSocioView(navController)
         }
         composable(Screen.RegistroSocio.route) {
-            RegistrarSocioView(navController)
+            RegistrarSocioView(
+               navController
+            )
         }
     }
     }
