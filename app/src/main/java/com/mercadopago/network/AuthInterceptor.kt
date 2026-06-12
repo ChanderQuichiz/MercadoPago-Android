@@ -4,25 +4,22 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class AuthInterceptor : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
+        val path = request.url.encodedPath
 
-    override fun intercept(
-        chain: Interceptor.Chain
-    ): Response {
+        // No enviamos token si es una ruta pública de /auth/
+        if (path.contains("/auth/")) {
+            return chain.proceed(request)
+        }
 
         val token = SessionManager.accessToken
-
-        val request = chain.request()
-            .newBuilder()
-            .apply {
-                token?.let {
-                    header(
-                        "Authorization",
-                        "Bearer $it"
-                    )
-                }
+        val newRequest = request.newBuilder().apply {
+            token?.let {
+                header("Authorization", "Bearer $it")
             }
-            .build()
+        }.build()
 
-        return chain.proceed(request)
+        return chain.proceed(newRequest)
     }
 }

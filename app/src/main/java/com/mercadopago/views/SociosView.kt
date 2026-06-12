@@ -202,7 +202,7 @@ fun SociosView(
 
                 val coincideBusqueda =
                     busqueda.isBlank() ||
-                            socio.nombre.contains(
+                            socio.name.contains(
                                 busqueda,
                                 ignoreCase = true
                             ) ||
@@ -213,7 +213,7 @@ fun SociosView(
 
                 val coincideEstado =
                     estadoSeleccionado == "Todos" ||
-                            socio.estado.equals(
+                            socio.status.equals(
                                 estadoSeleccionado,
                                 ignoreCase = true
                             )
@@ -276,7 +276,7 @@ fun SociosView(
                                     modifier = Modifier
                                         .size(12.dp)
                                         .background(
-                                            if (socio.estado == "ACTIVO")
+                                            if (socio.status == "ACTIVO")
                                                 Color(0xFF55C5B8)
                                             else
                                                 Color.Red,
@@ -287,9 +287,9 @@ fun SociosView(
                                 Spacer(modifier = Modifier.width(6.dp))
 
                                 Text(
-                                    text = socio.estado,
+                                    text = socio.status,
                                     color =
-                                        if (socio.estado == "ACTIVO")
+                                        if (socio.status == "ACTIVO")
                                             Color(0xFF00E539)
                                         else
                                             Color.Red,
@@ -338,7 +338,7 @@ fun SociosView(
                                     )
 
                                     Text(
-                                        socio.telefono,
+                                        socio.phone,
                                         color = Color.Black
                                     )
                                 }
@@ -358,7 +358,7 @@ fun SociosView(
                             Spacer(modifier = Modifier.height(5.dp))
 
                             Text(
-                                socio.correo,
+                                socio.email,
                                 color = Color.Black
                             )
                         }

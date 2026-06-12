@@ -110,7 +110,7 @@ fun CrearPuestoView(
             ServicioModel(1,"Agua","Servicio de agua",20.00,"ACTIVO"),
             ServicioModel(1,"Agua","Servicio de agua",20.00,"ACTIVO")
         )
-        var serviciosIds: List<Number> = listOf(1,4)
+        var serviciosIds: List<Int> = listOf(1,4)
         Column {
             Text("SERVICIO ASIGNADOS",
                 fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght)),
@@ -118,7 +118,7 @@ fun CrearPuestoView(
                 )
 
             servicios.forEach { servicio ->
-                var servicioRegistrado:Number? = serviciosIds.find { item ->
+                var servicioRegistrado: Int? = serviciosIds.find { item ->
                     item == servicio.id
                 }
                 Row(

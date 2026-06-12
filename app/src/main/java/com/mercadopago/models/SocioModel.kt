@@ -1,11 +1,14 @@
 package com.mercadopago.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class SocioModel(
-    var id: Number = 0,
-    var nombre: String = "",
-    var dni: String = "",
-    var correo: String = "",
-    var telefono: String = "",
-    var rol: String = "",
-    var estado: String = ""
+    val id: Int = 0,
+    val name: String = "",
+    val dni: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val role: String = "",
+    val status: String = ""
 )

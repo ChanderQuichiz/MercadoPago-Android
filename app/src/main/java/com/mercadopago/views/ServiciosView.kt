@@ -37,7 +37,7 @@ fun ServiciosView(
         ServicioModel(7, "Energía Eléctrica", "Descripción del servicio...", 60.00, "ACTIVO")
     )
 
-    DetailedDrawer(navController) {
+    DetailedDrawer(navController = navController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

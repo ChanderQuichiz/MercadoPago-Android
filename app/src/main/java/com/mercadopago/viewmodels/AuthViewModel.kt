@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mercadopago.models.LoginRequest
 import com.mercadopago.models.RegisterSocio
+import com.mercadopago.network.SessionManager
 import com.mercadopago.network.UIState
 import com.mercadopago.repositories.AuthRepository
+import com.mercadopago.repositories.UserRepository
+import com.mercadopago.services.AuthService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,9 +29,7 @@ class AuthViewModel: ViewModel() {
     private val _accessState = MutableStateFlow<UIState<String>>(UIState.Loading)
     val accessState: StateFlow<UIState<String>> = _accessState.asStateFlow()
 
-    init {
 
-    }
 
     fun sendLogin(loginRequest: LoginRequest) {
         viewModelScope.launch {
@@ -78,6 +79,7 @@ class AuthViewModel: ViewModel() {
             authRepository.sendAccess(secretKey)
                 .onSuccess {
                     _accessState.value = UIState.Success(it)
+
                 }
                 .onFailure {
                     _accessState.value = UIState.Error(it.message ?: "Error desconocido")

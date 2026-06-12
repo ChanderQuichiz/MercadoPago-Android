@@ -16,19 +16,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.mercadopago.viewmodels.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeudasAdminView(
 navController: NavController
-
+,authViewModel: AuthViewModel = AuthViewModel()
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf("Todas") }
     val filters = listOf("Todas", "Pendientes", "Pagadas")
 
     DetailedDrawer(
-        navController
+        navController = navController
     ) {
 
 

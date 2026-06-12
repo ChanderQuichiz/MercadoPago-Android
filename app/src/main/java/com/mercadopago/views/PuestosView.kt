@@ -82,7 +82,7 @@ navController: NavController
 
                     0,"PUE001","Puesto de comida",
                     zona = "Zona A",
-                    areaM2 = 23,
+                    areaM2 = 23.0,
                     precioBaseMensual = 342.23,
                     "Disponible",
                     listOf(1,2,4),
@@ -92,7 +92,7 @@ navController: NavController
 
                     0,"PUE001","Puesto de comida",
                     zona = "Zona A",
-                    areaM2 = 23,
+                    areaM2 = 23.0,
                     precioBaseMensual = 342.23,
                     "Disponible",
                     listOf(1,2,4),

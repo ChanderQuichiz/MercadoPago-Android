@@ -39,7 +39,7 @@ fun ReportesView(
         )
     }
 
-    DetailedDrawer (navController) {
+    DetailedDrawer (navController =navController) {
 
         Column(
             modifier = Modifier

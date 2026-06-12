@@ -47,7 +47,9 @@ fun LoginSocioView(
                 Spacer(modifier =  Modifier.height(40.dp))
                 IconButton(
                     onClick = {
-        navController.navigate("login")
+        navController.navigate("login"){
+
+        }
                     }
                 ) {
                     Icon(Icons.Default.Settings,null)

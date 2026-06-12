@@ -1,10 +1,10 @@
 package com.mercadopago.models
 
 data class SolicitudModel(
-    var id: Number = 0,
-    var puesto: String = "",
-    var codigo: String = "",
-    var fecha: String = "",
-    var estado: String = "",
-    var descripcion: String = ""
+    val id: Int = 0,
+    val puesto: String = "",
+    val codigo: String = "",
+    val fecha: String = "",
+    val estado: String = "",
+    val descripcion: String = ""
 )

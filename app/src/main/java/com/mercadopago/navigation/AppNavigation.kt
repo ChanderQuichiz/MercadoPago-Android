@@ -36,8 +36,7 @@ fun AppNavigation() {
             PuestosView(navController)
         }
         composable(Screen.MiPerfil.route) { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString("userId")
-            MiPerfilView(navController, userId.toString())
+            MiPerfilView(navController)
         }
         composable(Screen.CrearPuesto.route) {
             CrearPuestoView(navController)
@@ -74,6 +73,7 @@ fun AppNavigation() {
             PuestosDisponiblesView(navController)
         }
         composable(Screen.CrearServicio.route) {
+
             CrearServicioView(navController)
         }
     }

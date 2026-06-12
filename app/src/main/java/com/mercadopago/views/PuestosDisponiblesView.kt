@@ -35,13 +35,13 @@ fun PuestosDisponiblesView(
             codigo = "PUE-002",
             descripcion = "DESCRIPCIÓN DEL PUESTO",
             zona = "Zona A",
-            areaM2 = 10,
+            areaM2 = 10.0,
             precioBaseMensual = 1120.00,
             estado = "DISPONIBLE",
             servicios = listOf(
-                ServicioModel(1, "AGUA", "", 0, "ACTIVO"),
-                ServicioModel(2, "LUZ", "", 0, "ACTIVO"),
-                ServicioModel(3, "LIMPIEZA", "", 0, "ACTIVO")
+                ServicioModel(1, "AGUA", "", 0.0, "ACTIVO"),
+                ServicioModel(2, "LUZ", "", 0.0, "ACTIVO"),
+                ServicioModel(3, "LIMPIEZA", "", 0.0, "ACTIVO")
             )
         ),
         PuestoCardModel(
@@ -49,13 +49,13 @@ fun PuestosDisponiblesView(
             codigo = "PUE-002",
             descripcion = "DESC. COMIDA",
             zona = "Zona A",
-            areaM2 = 10,
+            areaM2 = 10.0,
             precioBaseMensual = 1120.00,
             estado = "DISPONIBLE",
             servicios = listOf(
-                ServicioModel(1, "AGUA", "", 0, "ACTIVO"),
-                ServicioModel(2, "LUZ", "", 0, "ACTIVO"),
-                ServicioModel(3, "LIMPIEZA", "", 0, "ACTIVO")
+                ServicioModel(1, "AGUA", "", 0.0, "ACTIVO"),
+                ServicioModel(2, "LUZ", "", 0.0, "ACTIVO"),
+                ServicioModel(3, "LIMPIEZA", "", 0.0, "ACTIVO")
             )
         ),
         PuestoCardModel(
@@ -63,13 +63,13 @@ fun PuestosDisponiblesView(
             codigo = "PUE-002",
             descripcion = "DESC. COMIDA",
             zona = "Zona A",
-            areaM2 = 10,
+            areaM2 = 10.0,
             precioBaseMensual = 1120.00,
             estado = "DISPONIBLE",
             servicios = listOf(
-                ServicioModel(1, "AGUA", "", 0, "ACTIVO"),
-                ServicioModel(2, "LUZ", "", 0, "ACTIVO"),
-                ServicioModel(3, "LIMPIEZA", "", 0, "ACTIVO")
+                ServicioModel(1, "AGUA", "", 0.0, "ACTIVO"),
+                ServicioModel(2, "LUZ", "", 0.0, "ACTIVO"),
+                ServicioModel(3, "LIMPIEZA", "", 0.0, "ACTIVO")
             )
         ),
         PuestoCardModel(
@@ -77,18 +77,18 @@ fun PuestosDisponiblesView(
             codigo = "PUE-002",
             descripcion = "DESC. COMIDA",
             zona = "Zona A",
-            areaM2 = 10,
+            areaM2 = 10.0,
             precioBaseMensual = 1120.00,
             estado = "DISPONIBLE",
             servicios = listOf(
-                ServicioModel(1, "AGUA", "", 0, "ACTIVO"),
-                ServicioModel(2, "LUZ", "", 0, "ACTIVO"),
-                ServicioModel(3, "LIMPIEZA", "", 0, "ACTIVO")
+                ServicioModel(1, "AGUA", "", 0.0, "ACTIVO"),
+                ServicioModel(2, "LUZ", "", 0.0, "ACTIVO"),
+                ServicioModel(3, "LIMPIEZA", "", 0.0, "ACTIVO")
             )
         )
     )
 DetailedDrawer(
-    navController
+    navController =navController
 ) {
     paddingValues ->
     Column(
