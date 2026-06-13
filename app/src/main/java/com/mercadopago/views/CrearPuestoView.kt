@@ -1,9 +1,10 @@
 package com.mercadopago.views
 
-import com.mercadopago.components.OutlinedSelect
+import OutlinedSelect
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,29 +33,37 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mercadopago.R
 import com.mercadopago.models.CreatePuestoModel
+import com.mercadopago.models.PuestoCardModel
+import com.mercadopago.models.ServicioFilter
 import com.mercadopago.models.ServicioModel
+import com.mercadopago.network.UIState
+import com.mercadopago.viewmodels.PuestoViewModel
+import com.mercadopago.viewmodels.ServicioViewModel
+import kotlinx.coroutines.selects.select
 
 @Composable
 fun CrearPuestoView(
-    navController: NavController
+    navController: NavController,
+    puestosViewModel: PuestoViewModel = viewModel() ,
+    servicioViewModel: ServicioViewModel = viewModel()
 ){
 
-    /*
-    *
-    *
+
 
        val puestosCreateState = puestosViewModel.createPuesto.collectAsStateWithLifecycle()
 
+    val serviciosState = servicioViewModel.serviciosState.collectAsStateWithLifecycle()
+
     var showDialogError by  remember { mutableStateOf(false) }
 
-    when(val state = puestosCreateState){
+    when(val state = puestosCreateState.value){
         is UIState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = Color(0XFF35C0AB))
-            }
+
         }
         is UIState.Error -> {
             AlertDialog(
@@ -66,18 +77,20 @@ fun CrearPuestoView(
                 }
             )
         }
-        is UIState.Success -> {
-
+        is UIState.Success<*> -> {
+               navController.navigate("Puestos")
         }
 
 
     }
-    */
 
 
 
 
-    var puesto by remember { mutableStateOf(CreatePuestoModel()) }
+
+    var puesto by remember { mutableStateOf(PuestoCardModel()) }
+
+
     //informacion de puesto
     Column(modifier = Modifier.fillMaxSize()
         .padding(30.dp,0.dp)) {
@@ -91,18 +104,24 @@ fun CrearPuestoView(
             .fillMaxWidth()
         ) {
             OutlinedSelect(
-                listOf("Disponible", "Ocupado"),
-                "Estado",
+                options = listOf("Disponible", "Ocupado"),
+                selectedOption = puesto.estado,
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
-                    .padding(0.dp,0.dp,8.dp,0.dp)
+                    .padding(end = 8.dp),
+                onOptionSelected = {
+                    puesto = puesto.copy(estado = it)
+                },
+                label = "Estado"
             )
             OutlinedSelect(
-                listOf("Zona A", "Zona B", "Zona C"),
-                "Zona",
-                modifier = Modifier
-                    .padding(8.dp,0.dp,0.dp,0.dp)
-
+                options = listOf("Zona A", "Zona B", "Zona C"),
+                selectedOption = puesto.zona,
+                modifier = Modifier.padding(start = 8.dp),
+                onOptionSelected = {
+                    puesto = puesto.copy(zona = it)
+                },
+                label = "Zona"
             )
         }
 
@@ -119,23 +138,32 @@ fun CrearPuestoView(
         )
         Row {
             OutlinedTextField(
-                value = puesto.areaM2.toString(),
+                value = if (puesto.areaM2 == 0.0) "" else puesto.areaM2.toString(),
                 onValueChange = {
-                    puesto = puesto.copy(areaM2 = it.toDouble())
+                    puesto = puesto.copy(
+                        areaM2 = it.toDoubleOrNull() ?: 0.0
+                    )
                 },
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
+                modifier = Modifier.fillMaxWidth(0.5f),
+                placeholder = {
+                    Text("Area m²")
+                }
             )
             Spacer(modifier =
                     Modifier.
                 width(15.dp)
             )
             OutlinedTextField(
-                value = puesto.precioBaseMensual.toString(),
+                value = if (puesto.precioBaseMensual == 0.0) "" else puesto.precioBaseMensual.toString(),
                 onValueChange = {
-                    puesto = puesto.copy(precioBaseMensual = it.toDouble())
+                    puesto = puesto.copy(
+                        precioBaseMensual = it.toDoubleOrNull() ?: 0.0
+                    )
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text("Precio m²")
+                }
             )
         }
 
@@ -144,59 +172,91 @@ fun CrearPuestoView(
         //informacion de puesto - fin
 
         //Servicios asignados - inicio
-        var servicios: List<ServicioModel> = listOf(
-            ServicioModel(1,"Agua","Servicio de agua",20.00,"ACTIVO"),
-            ServicioModel(1,"Agua","Servicio de agua",20.00,"ACTIVO")
-        )
-        var serviciosIds: List<Int> = listOf(1,4)
+
+
+
+
+
         Column {
             Text("SERVICIO ASIGNADOS",
                 fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght)),
                 modifier = Modifier.padding(0.dp,10.dp)
                 )
 
-            servicios.forEach { servicio ->
-                var servicioRegistrado: Int? = serviciosIds.find { item ->
-                    item == servicio.id
-                }
-                Row(
-                   verticalAlignment = Alignment.CenterVertically,
-                    modifier =
-                    Modifier
-                        .background(Color(0XFFFCFAFA))
-                        .fillMaxWidth()
-                        .border(1.dp, Color(0XFF888787),RoundedCornerShape(5.dp))
-                        .height(40.dp)
+            when(val state = serviciosState.value){
+                is UIState.Loading -> {
+                  Box(
+                      modifier = Modifier.fillMaxSize(),
+                      contentAlignment = Alignment.Center
 
-                )
-                {
 
-                    if (servicioRegistrado != null){
-                        Checkbox(
-                            checked = true,
-                            onCheckedChange = {  }
-                        )
-                    }
-                    else {
-                        Checkbox(
-                            checked = false,
-                            onCheckedChange = { }
-                        )
-                    }
-                    Text(servicio.descripcion,
-                        fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
-                        ,
-                        color = Color(0XFF777777)
-                    )
-                    Text("$/${servicio.precioMensual} x mes   ",
-                        fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
-                    , textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth(),
-                        color = Color(0XFF777777)
-                    )
+                  ){
+                      CircularProgressIndicator(color = Color(0XFF35C0AB))
+
+                  }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-            }
+                is UIState.Error -> {
+                    Spacer(modifier = Modifier.height(50.dp))
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Error al cargar los servicios")
+                    }
+                }
+                is UIState.Success -> {
+
+                    val servicios: List<ServicioModel> = state.data
+
+
+                    servicios.forEach { servicio ->
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier =
+                                Modifier
+                                    .background(Color(0XFFFCFAFA))
+                                    .fillMaxWidth()
+                                    .border(1.dp, Color(0XFF888787),RoundedCornerShape(5.dp))
+                                    .height(40.dp)
+
+                        )
+                        {
+                            Checkbox(
+                                checked = servicio.id in puesto.servicioIds,
+                                onCheckedChange = { checked ->
+
+                                    puesto = puesto.copy(
+                                        servicioIds =
+                                            if (checked) {
+                                                puesto.servicioIds + servicio.id
+                                            } else {
+                                                puesto.servicioIds - servicio.id
+                                            }
+                                    )
+                                }
+                            )
+                            Text(servicio.nombre,
+                                fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
+                                ,
+                                color = Color(0XFF777777)
+                            )
+                            Text("$/${servicio.precioMensual} x mes   ",
+                                fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
+                                , textAlign = TextAlign.End,
+                                modifier = Modifier.fillMaxWidth(),
+                                color = Color(0XFF777777)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+
+
+                }
+
+
+        }
+
+
 
         }
 
@@ -206,7 +266,11 @@ fun CrearPuestoView(
             horizontalArrangement = Arrangement.End
         ) {
             Button(
-                onClick = {},
+                onClick = {
+
+                puestosViewModel.createPuesto(puesto)
+
+                },
                 colors = ButtonDefaults.buttonColors(Color(0XFF355CC0)),
                 shape = RoundedCornerShape(7.dp)
             ) {

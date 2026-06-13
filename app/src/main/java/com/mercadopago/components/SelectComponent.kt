@@ -1,5 +1,3 @@
-package com.mercadopago.components
-
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -17,44 +15,30 @@ import androidx.compose.ui.Modifier
 @Composable
 fun OutlinedSelect(
     options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit,
     label: String,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
-
-
-
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-
-    var selectedOption by remember {
-        mutableStateOf("")
-    }
+    var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = {
-            expanded = !expanded
-        }
+        onExpandedChange = { expanded = it }
     ) {
 
-            OutlinedTextField(
-                value = selectedOption,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(
-                        expanded = expanded
-                    )
-                },
-
-                modifier = modifier,
-                placeholder = {
-                    Text(label
-                    )
-                }
-            )
-
+        OutlinedTextField(
+            value = selectedOption,
+            onValueChange = {},
+            readOnly = true,
+            modifier = modifier.menuAnchor(),
+            label = { Text(label) },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(
+                    expanded = expanded
+                )
+            }
+        )
 
         ExposedDropdownMenu(
             expanded = expanded,
@@ -66,14 +50,13 @@ fun OutlinedSelect(
             options.forEach { option ->
 
                 DropdownMenuItem(
-                    text = {
-                        Text(option)
-                    },
+                    text = { Text(option) },
                     onClick = {
-                        selectedOption = option
+                        onOptionSelected(option)
                         expanded = false
                     }
                 )
+
             }
         }
     }
