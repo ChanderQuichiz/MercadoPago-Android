@@ -1,6 +1,7 @@
 package com.mercadopago.network
 
 import com.mercadopago.services.AuthService
+import com.mercadopago.services.PuestoService
 import com.mercadopago.services.UserService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -39,4 +40,8 @@ object RetrofitClient {
     val user: UserService by lazy {
         retrofit.create(UserService::class.java)
     }
+
+  val puesto: PuestoService by lazy {
+      retrofit.create(PuestoService::class.java)
+  }
 }

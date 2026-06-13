@@ -39,6 +39,44 @@ import com.mercadopago.models.ServicioModel
 fun CrearPuestoView(
     navController: NavController
 ){
+
+    /*
+    *
+    *
+
+       val puestosCreateState = puestosViewModel.createPuesto.collectAsStateWithLifecycle()
+
+    var showDialogError by  remember { mutableStateOf(false) }
+
+    when(val state = puestosCreateState){
+        is UIState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = Color(0XFF35C0AB))
+            }
+        }
+        is UIState.Error -> {
+            AlertDialog(
+                onDismissRequest = { showDialogError = false },
+                title = { Text("Upps algo salio mal...") },
+                text = { Text("No se pudo crear el puesto.") },
+                confirmButton = {
+                    Button(onClick = { showDialogError = false }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+        is UIState.Success -> {
+
+        }
+
+
+    }
+    */
+
+
+
+
     var puesto by remember { mutableStateOf(CreatePuestoModel()) }
     //informacion de puesto
     Column(modifier = Modifier.fillMaxSize()
