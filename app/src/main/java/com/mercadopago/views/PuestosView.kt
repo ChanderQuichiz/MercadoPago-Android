@@ -16,11 +16,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -131,7 +136,7 @@ Column(
                                         "",
                                         "",
                                         selectedoption,
-                                        com.mercadopago.models.Paginator(0, 10)
+                                        com.mercadopago.models.Paginator(0, 50)
                                     )
                                 )
 
@@ -242,14 +247,15 @@ Column(
                                         fontFamily = FontFamily(Font(R.font.changa_medium)),
                                         fontSize = 18.sp
                                     )
-                                    Button(onClick = {},
-                                        colors = ButtonDefaults.buttonColors(Color.Transparent)) {
-                                        Text(">",
-                                            color = Color.Black,
-                                            fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght)),
-                                            fontSize = 16.sp
-                                        )
-                                    }
+
+                                        IconButton(
+                                            onClick = {
+                                                navController.navigate("crear-puesto?puestoId=${puesto.id}")
+                                            }
+                                        ) {
+                                            Icon(Icons.AutoMirrored.Filled.ArrowForwardIos,null)
+                                        }
+
                                 }
 
 

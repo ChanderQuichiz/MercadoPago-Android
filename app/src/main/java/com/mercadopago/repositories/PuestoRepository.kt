@@ -40,6 +40,14 @@ class PuestoRepository {
         }
     }
 
+    suspend fun getPuestoById(id: Int): Result<PuestoCardModel> = withContext(
+        Dispatchers.IO){
+        try {
+            Result.success( puesto.getPuestoById(id))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
 
 

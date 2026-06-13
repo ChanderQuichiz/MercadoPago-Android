@@ -29,8 +29,12 @@ class PuestoViewModel: ViewModel() {
     val updatePuesto: StateFlow<UIState<PuestoCardModel>> = _updatePuesto.asStateFlow()
 
 
+    val _getPuestoById = MutableStateFlow<UIState<PuestoCardModel>>(UIState.Loading)
+    val getPuestoById: StateFlow<UIState<PuestoCardModel>> = _getPuestoById.asStateFlow()
+
+
     init {
-        searchPuesto(PuestoFilterDto("", "", "Disponible", com.mercadopago.models.Paginator(0, 10)))
+        searchPuesto(PuestoFilterDto("", "", "Disponible", com.mercadopago.models.Paginator(0, 50)))
     }
 
 
@@ -75,6 +79,21 @@ class PuestoViewModel: ViewModel() {
         }
         
     }
+
+
+    fun getPuestoById(id: Int) {
+        viewModelScope.launch {
+            _getPuestoById.value = UIState.Loading
+            puestoRepository.getPuestoById(id)
+                .onSuccess {
+                    _getPuestoById.value = UIState.Success(it)
+                }
+                .onFailure {
+                    _getPuestoById.value = UIState.Error(it.message ?: "Error desconocido")
+                }
+        }
+    }
+
 }
 
 

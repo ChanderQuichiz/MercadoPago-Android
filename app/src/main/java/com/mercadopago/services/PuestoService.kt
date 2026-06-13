@@ -12,6 +12,10 @@ import retrofit2.http.QueryMap
 
 interface PuestoService {
 
+
+    @GET("puestos/{id}")
+    suspend fun getPuestoById(@Path("id") id: Int): PuestoCardModel
+
     @POST("puestos/create")
     suspend fun createPuesto(@Body createPuestoRequest: PuestoCardModel): PuestoCardModel
 

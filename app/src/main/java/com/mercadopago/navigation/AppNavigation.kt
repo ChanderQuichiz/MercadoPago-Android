@@ -13,8 +13,6 @@ import com.mercadopago.views.PuestosView
 import com.mercadopago.views.MisSolicitudesView
 import com.mercadopago.views.RegistrarSocioView
 import com.mercadopago.views.SociosView
-import com.mercadopago.views.LoginSocioView
-import com.mercadopago.views.RegistrarSocioView
 import com.mercadopago.views.DeudasAdminView
 import com.mercadopago.views.EnviarSolicitudView
 import com.mercadopago.views.PuestosDisponiblesView
@@ -27,7 +25,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.LoginSocio.route     // Primera pantalla
+        startDestination = Screen.LoginSocio.route
     ) {
         composable(Screen.Login.route) {
             LoginAdminView(navController)
@@ -35,11 +33,12 @@ fun AppNavigation() {
         composable(Screen.Puestos.route) {
             PuestosView(navController)
         }
-        composable(Screen.MiPerfil.route) { backStackEntry ->
+        composable(Screen.MiPerfil.route) {
             MiPerfilView(navController)
         }
-        composable(Screen.CrearPuesto.route) {
-            CrearPuestoView(navController)
+        composable(Screen.CrearPuesto.route) {  backStackEntry ->
+            val puestoId = backStackEntry.arguments?.getString("puestoId")?.toIntOrNull()
+            CrearPuestoView(navController, updatePuestoModel = puestoId)
         }
         composable(Screen.MisSolicitudes.route) {
             MisSolicitudesView(navController)
@@ -51,20 +50,16 @@ fun AppNavigation() {
             LoginSocioView(navController)
         }
         composable(Screen.RegistroSocio.route) {
-            RegistrarSocioView(
-               navController
-            )
+            RegistrarSocioView(navController)
         }
         composable(Screen.Deudas.route) {
             DeudasAdminView(navController)
-
         }
         composable(Screen.Reportes.route) {
             ReportesView(navController)
         }
         composable(Screen.Servicios.route) {
             ServiciosView(navController)
-
         }
         composable(Screen.EnviarSolicitud.route) {
             EnviarSolicitudView(navController)
@@ -73,8 +68,7 @@ fun AppNavigation() {
             PuestosDisponiblesView(navController)
         }
         composable(Screen.CrearServicio.route) {
-
             CrearServicioView(navController)
         }
     }
-    }
+}
