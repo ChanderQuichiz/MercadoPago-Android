@@ -41,6 +41,17 @@ fun DetailedDrawer(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    
+    // Observamos el token de forma reactiva
+    val token by SessionManager.accessTokenFlow.collectAsStateWithLifecycle()
+    val userState by userViewModel.meUIState.collectAsStateWithLifecycle()
+
+    // Cada vez que el token cambie (ej. tras login), pedimos el perfil
+    LaunchedEffect(token) {
+        if (token != null && userState !is UIState.Success) {
+            userViewModel.getMe()
+        }
+    }
 
     val token by SessionManager.accessTokenFlow.collectAsStateWithLifecycle()
     val userState by userViewModel.meUIState.collectAsStateWithLifecycle()

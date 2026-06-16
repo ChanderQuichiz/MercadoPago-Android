@@ -9,6 +9,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mercadopago.services.SolicitudService
 
 private val json = Json {
     ignoreUnknownKeys = true
@@ -48,5 +49,9 @@ object RetrofitClient {
 
     val servicio: ServicioService by lazy {
         retrofit.create(ServicioService::class.java)
+    }
+
+    val solicitud: SolicitudService by lazy {
+        retrofit.create(SolicitudService::class.java)
     }
 }

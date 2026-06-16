@@ -1,41 +1,43 @@
 package com.mercadopago.views
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mercadopago.R
 import com.mercadopago.models.SocioModel
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.Alignment
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.material3.HorizontalDivider
+import com.mercadopago.network.UIState
+import com.mercadopago.viewmodels.UserViewModel
+
 @Composable
 fun SociosView(
-    navController: NavController
+    navController: NavController,
+    userViewModel: UserViewModel = viewModel()
 ) {
-
     DetailedDrawer(navController = navController) { padding ->
 
         var filtroExpandido by remember { mutableStateOf(false) }
-
-        val opcionesEstado = listOf(
-            "Todos",
-            "Activo",
-            "Inactivo"
-        )
 
         var estadoSeleccionado by remember {
             mutableStateOf("Todos")
@@ -45,28 +47,19 @@ fun SociosView(
             mutableStateOf("")
         }
 
-        var socios: List<SocioModel> by remember {
-            mutableStateOf(
-                listOf(
-                    SocioModel(
-                        1,
-                        "Nombre 1",
-                        "12345678",
-                        "admin@mercadopago.com",
-                        "999999999",
-                        "Admin",
-                        "ACTIVO"
-                    ),
-                    SocioModel(
-                        2,
-                        "Nombre 2",
-                        "87654321",
-                        "admin@mercadopago.com",
-                        "988888888",
-                        "Socio",
-                        "ACTIVO"
-                    )
-                )
+        val sociosUIState by userViewModel.sociosUIState.collectAsState()
+
+        val estadoParaBackend = when (estadoSeleccionado) {
+            "Todos" -> ""
+            "Activo" -> "ACTIVO"
+            "Inactivo" -> "INACTIVO"
+            else -> ""
+        }
+
+        LaunchedEffect(busqueda, estadoSeleccionado) {
+            userViewModel.cargarSocios(
+                query = busqueda,
+                status = estadoParaBackend
             )
         }
 
@@ -79,7 +72,7 @@ fun SociosView(
         ) {
 
             Text(
-                "Lista de Usuarios Registrados",
+                text = "Lista de Usuarios Registrados",
                 fontFamily = FontFamily(
                     Font(R.font.inclusivesans_variablefont_wght)
                 ),
@@ -123,8 +116,7 @@ fun SociosView(
                             Color.LightGray,
                             RoundedCornerShape(12.dp)
                         )
-                )
-                {
+                ) {
 
                     Row(
                         modifier = Modifier
@@ -147,11 +139,7 @@ fun SociosView(
                         )
 
                         Text(
-                            text =
-                                if (filtroExpandido)
-                                    "˄"
-                                else
-                                    "˅",
+                            text = if (filtroExpandido) "˄" else "˅",
                             color = Color.Black
                         )
                     }
@@ -160,17 +148,12 @@ fun SociosView(
 
                         HorizontalDivider()
 
-                        listOf(
-                            "Todos",
-                            "Activo",
-                            "Inactivo"
-                        ).forEach { opcion ->
+                        listOf("Todos", "Activo", "Inactivo").forEach { opcion ->
 
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-
                                         estadoSeleccionado = opcion
                                         filtroExpandido = false
                                     }
@@ -179,7 +162,7 @@ fun SociosView(
                             ) {
 
                                 Text(
-                                    opcion,
+                                    text = opcion,
                                     color =
                                         if (opcion == estadoSeleccionado)
                                             Color(0xFF355CC0)
@@ -198,172 +181,184 @@ fun SociosView(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            val sociosFiltrados = socios.filter { socio ->
+            when (val state = sociosUIState) {
 
-                val coincideBusqueda =
-                    busqueda.isBlank() ||
-                            socio.name.contains(
-                                busqueda,
-                                ignoreCase = true
-                            ) ||
-                            socio.dni.contains(
-                                busqueda,
-                                ignoreCase = true
-                            )
-
-                val coincideEstado =
-                    estadoSeleccionado == "Todos" ||
-                            socio.status.equals(
-                                estadoSeleccionado,
-                                ignoreCase = true
-                            )
-
-                coincideBusqueda && coincideEstado
-            }
-            sociosFiltrados.forEach { socio ->
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp)
-                        .background(
-                            Color.White,
-                            RoundedCornerShape(15.dp)
-                        )
-                        .border(
-                            1.dp,
-                            Color(0xFFD1D1D1),
-                            RoundedCornerShape(15.dp)
-                        )
-                        .padding(15.dp)
-                ) {
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
+                is UIState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 30.dp),
+                        contentAlignment = Alignment.Center
                     ) {
+                        CircularProgressIndicator()
+                    }
+                }
 
-                        // FOTO DEL USUARIO
-                        Box(
-                            modifier = Modifier
-                                .width(75.dp)
-                                .height(100.dp)
-                                .align(Alignment.CenterVertically)
-                                .background(
-                                    Color(0xFFD9D9D9),
-                                    RoundedCornerShape(4.dp)
-                                )
-                                .border(
-                                    1.dp,
-                                    Color.LightGray,
-                                    RoundedCornerShape(4.dp)
-                                )
+                is UIState.Success -> {
+                    val socios = state.data
+
+                    if (socios.isEmpty()) {
+                        Text(
+                            text = "No hay socios para mostrar.",
+                            color = Color.Gray,
+                            fontFamily = FontFamily(
+                                Font(R.font.changa_medium)
+                            )
                         )
-
-                        Spacer(modifier = Modifier.width(15.dp))
-
-                        Column(
-                            modifier = Modifier.weight(1f)
-                        ) {
-
-                            // ESTADO
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-
-                                Box(
-                                    modifier = Modifier
-                                        .size(12.dp)
-                                        .background(
-                                            if (socio.status == "ACTIVO")
-                                                Color(0xFF55C5B8)
-                                            else
-                                                Color.Red,
-                                            CircleShape
-                                        )
-                                )
-
-                                Spacer(modifier = Modifier.width(6.dp))
-
-                                Text(
-                                    text = socio.status,
-                                    color =
-                                        if (socio.status == "ACTIVO")
-                                            Color(0xFF00E539)
-                                        else
-                                            Color.Red,
-                                    fontFamily = FontFamily(
-                                        Font(R.font.changa_medium)
-                                    )
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(10.dp))
-
-                            // DNI Y TELEFONO
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-
-                                    Text(
-                                        "DNI",
-                                        color = Color.Black,
-                                        fontFamily = FontFamily(
-                                            Font(R.font.changa_medium)
-                                        )
-                                    )
-
-                                    Text(
-                                        socio.dni,
-                                        color = Color.Black
-                                    )
-                                }
-
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-
-                                    Text(
-                                        "Telefono",
-                                        color = Color.Black,
-                                        fontFamily = FontFamily(
-                                            Font(R.font.changa_medium)
-                                        )
-                                    )
-
-                                    Text(
-                                        socio.phone,
-                                        color = Color.Black
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(15.dp))
-
-                            // CONTACTO
-                            Text(
-                                "Contacto",
-                                color = Color.Gray,
-                                fontFamily = FontFamily(
-                                    Font(R.font.changa_medium)
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.height(5.dp))
-
-                            Text(
-                                socio.email,
-                                color = Color.Black
-                            )
+                    } else {
+                        socios.forEach { socio ->
+                            SocioCard(socio = socio)
                         }
                     }
                 }
+
+                is UIState.Error -> {
+                    Text(
+                        text = "Error: ${state.message}",
+                        color = Color.Red,
+                        fontFamily = FontFamily(
+                            Font(R.font.changa_medium)
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SocioCard(
+    socio: SocioModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp)
+            .background(
+                Color.White,
+                RoundedCornerShape(15.dp)
+            )
+            .border(
+                1.dp,
+                Color(0xFFD1D1D1),
+                RoundedCornerShape(15.dp)
+            )
+            .padding(15.dp)
+    ) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+
+            Image(
+                painter = painterResource(id = R.drawable.usuario_generico),
+                contentDescription = "Foto de usuario",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .width(75.dp)
+                    .height(100.dp)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Spacer(modifier = Modifier.width(15.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .size(12.dp)
+                            .background(
+                                if (socio.status.equals("ACTIVO", ignoreCase = true))
+                                    Color(0xFF55C5B8)
+                                else
+                                    Color.Red,
+                                CircleShape
+                            )
+                    )
+
+                    Spacer(modifier = Modifier.width(6.dp))
+
+                    Text(
+                        text = socio.status,
+                        color =
+                            if (socio.status.equals("ACTIVO", ignoreCase = true))
+                                Color(0xFF00E539)
+                            else
+                                Color.Red,
+                        fontFamily = FontFamily(
+                            Font(R.font.changa_medium)
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Text(
+                            text = "DNI",
+                            color = Color.Black,
+                            fontFamily = FontFamily(
+                                Font(R.font.changa_medium)
+                            )
+                        )
+
+                        Text(
+                            text = socio.dni,
+                            color = Color.Black
+                        )
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Text(
+                            text = "Telefono",
+                            color = Color.Black,
+                            fontFamily = FontFamily(
+                                Font(R.font.changa_medium)
+                            )
+                        )
+
+                        Text(
+                            text = socio.phone,
+                            color = Color.Black
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                Text(
+                    text = "Contacto",
+                    color = Color.Gray,
+                    fontFamily = FontFamily(
+                        Font(R.font.changa_medium)
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Text(
+                    text = socio.email,
+                    color = Color.Black
+                )
             }
         }
     }
