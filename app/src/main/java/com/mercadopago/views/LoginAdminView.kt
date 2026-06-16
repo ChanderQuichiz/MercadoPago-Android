@@ -159,6 +159,7 @@ fun LoginAdminView(
 
 
                         when(val state = accessSecretUIState){
+                            is UIState.Idle -> {}
                             is UIState.Error -> {
                                 println("Error: ${state.message}")
 

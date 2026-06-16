@@ -17,16 +17,16 @@ import kotlinx.coroutines.launch
 class AuthViewModel: ViewModel() {
     private val authRepository = AuthRepository()
 
-    private val _loginState = MutableStateFlow<UIState<String>>(UIState.Loading)
+    private val _loginState = MutableStateFlow<UIState<String>>(UIState.Idle)
     val loginState: StateFlow<UIState<String>> = _loginState.asStateFlow()
 
-    private val _registerState = MutableStateFlow<UIState<RegisterSocio>>(UIState.Loading)
+    private val _registerState = MutableStateFlow<UIState<RegisterSocio>>(UIState.Idle)
     val registerState: StateFlow<UIState<RegisterSocio>> = _registerState.asStateFlow()
 
-    private val _logoutSate = MutableStateFlow<UIState<Void>>(UIState.Loading)
+    private val _logoutSate = MutableStateFlow<UIState<Void>>(UIState.Idle)
     val logoutState: StateFlow<UIState<Void>> = _logoutSate.asStateFlow()
 
-    private val _accessState = MutableStateFlow<UIState<String>>(UIState.Loading)
+    private val _accessState = MutableStateFlow<UIState<String>>(UIState.Idle)
     val accessState: StateFlow<UIState<String>> = _accessState.asStateFlow()
 
 
