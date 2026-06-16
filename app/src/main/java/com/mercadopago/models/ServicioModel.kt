@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ServicioModel(
-    var id: Number,
-    var nombre: String,
-    var descripcion: String,
-    var precioMensual: Number,
-    var estado: String
+    val id: Int,
+    val nombre: String,
+    val descripcion: String,
+    val precioMensual: Double,
+    val estado: String
 )
