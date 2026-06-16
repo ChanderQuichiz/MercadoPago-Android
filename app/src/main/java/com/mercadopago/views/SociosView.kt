@@ -221,6 +221,8 @@ fun SociosView(
                         )
                     )
                 }
+
+                else -> {}
             }
         }
     }

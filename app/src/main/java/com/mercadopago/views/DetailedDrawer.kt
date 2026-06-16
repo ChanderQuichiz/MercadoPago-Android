@@ -53,8 +53,6 @@ fun DetailedDrawer(
         }
     }
 
-    val token by SessionManager.accessTokenFlow.collectAsStateWithLifecycle()
-    val userState by userViewModel.meUIState.collectAsStateWithLifecycle()
 
     LaunchedEffect(token) {
         if (token != null && userState !is UIState.Success) {
@@ -136,6 +134,11 @@ fun DetailedDrawer(
                                     label = { Text("Puestos Disponibles") },
                                     selected = false,
                                     onClick = { navController.navigate("puestos-disponibles") }
+                                )
+                                NavigationDrawerItem(
+                                    label = { Text("Mis Solicitudes") },
+                                    selected = false,
+                                    onClick = { navController.navigate("mis-solicitudes") }
                                 )
                             }
 
