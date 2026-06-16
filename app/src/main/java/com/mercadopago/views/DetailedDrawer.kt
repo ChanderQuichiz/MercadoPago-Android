@@ -41,19 +41,16 @@ fun DetailedDrawer(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    
-    // Observamos el token de forma reactiva
+
     val token by SessionManager.accessTokenFlow.collectAsStateWithLifecycle()
     val userState by userViewModel.meUIState.collectAsStateWithLifecycle()
 
-    // Cada vez que el token cambie (ej. tras login), pedimos el perfil
     LaunchedEffect(token) {
         if (token != null && userState !is UIState.Success) {
             userViewModel.getMe()
         }
     }
 
-    // Si no hay token, fuera
     if (token == null) {
         LaunchedEffect(Unit) {
             navController.navigate("login") {
@@ -64,17 +61,15 @@ fun DetailedDrawer(
     }
 
     when (val state = userState) {
+        is UIState.Idle -> {}
         is UIState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = Color(0XFF35C0AB))
             }
         }
         is UIState.Error -> {
-            // Si hay error de perfil, reintentamos o salimos
             Text(text = "Error cargando perfil...", modifier = Modifier.clickable { userViewModel.getMe() })
             LaunchedEffect(Unit) {
-                // Opcional: podrías poner un delay antes de volver al login
-                // navController.navigate("login") { popUpTo(0) }
             }
         }
         is UIState.Success -> {

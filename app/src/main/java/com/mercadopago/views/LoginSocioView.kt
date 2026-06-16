@@ -22,19 +22,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mercadopago.models.LoginRequest
+import com.mercadopago.network.UIState
+import com.mercadopago.viewmodels.AuthViewModel
 
 @Composable
 fun LoginSocioView(
-  navController: NavController
+    navController: NavController,
+    viewModel: AuthViewModel = viewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var validationError by remember { mutableStateOf("") }
+    
+    val loginState by viewModel.loginState.collectAsStateWithLifecycle()
 
     val primaryColor = Color(0xFF00C1A2)
+
+    LaunchedEffect(loginState) {
+        if (loginState is UIState.Success) {
+            navController.navigate("mis-solicitudes") {
+                popUpTo("login-socio") { inclusive = true }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -137,22 +153,43 @@ fun LoginSocioView(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            if (validationError.isNotEmpty() || loginState is UIState.Error) {
+                Text(
+                    text = if (validationError.isNotEmpty()) validationError else (loginState as UIState.Error).message,
+                    color = Color.Red,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+
             Button(
                 onClick = {
-                    navController.navigate("mis-solicitudes")
+                    validationError = ""
+                    
+                    if (email.isEmpty() || password.isEmpty()) {
+                        validationError = "Por favor, completa todos los campos"
+                        return@Button
+                    }
+
+                    viewModel.sendLogin(LoginRequest(email, password))
                 },
+                enabled = loginState !is UIState.Loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
             ) {
-                Text(
-                    text = "ACCEDER",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                if (loginState is UIState.Loading) {
+                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                } else {
+                    Text(
+                        text = "ACCEDER",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
