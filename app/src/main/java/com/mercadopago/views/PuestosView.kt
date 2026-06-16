@@ -68,7 +68,6 @@ puestosViewModel: PuestoViewModel = PuestoViewModel()
             modifier = Modifier.padding(padding)
 
         ) {
-            //tabs DE ESTADO - INICIO
             var state by remember { mutableIntStateOf(0) }
             val titles = listOf("DISPONIBLE", "OCUPADO")
 
@@ -99,11 +98,9 @@ puestosViewModel: PuestoViewModel = PuestoViewModel()
 
             }
             Spacer(modifier = Modifier.height(20.dp))
-            //TABS DE ESTADO FIN
-            //ROWS PUESTOS
 
             when(val state = puestosState.value){
-
+            is UIState.Idle -> {}
             is UIState.Loading -> {
 
                 Spacer(modifier =   Modifier.height(140.dp))

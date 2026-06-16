@@ -137,6 +137,7 @@ fun CrearPuestoView(
                 )
 
                 when (val state = serviciosState.value) {
+                    is UIState.Idle -> {}
                     is UIState.Loading -> {
                         CircularProgressIndicator(color = Color(0XFF35C0AB))
                     }

@@ -18,28 +18,44 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.mercadopago.models.RegisterSocio
+import com.mercadopago.network.UIState
+import com.mercadopago.viewmodels.AuthViewModel
+import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrarSocioView(
-    navController: NavController
+    navController: NavController,
+    viewModel: AuthViewModel = viewModel()
 ) {
-    // Variables de estado para retener el texto de cada input del formulario
     var nombresApellidos by remember { mutableStateOf("") }
     var dni by remember { mutableStateOf("") }
     var telefono by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var validationError by remember { mutableStateOf("") }
+    
+    val registerState by viewModel.registerState.collectAsStateWithLifecycle()
 
     val primaryColor = Color(0xFF00C1A2)
     val backgroundColor = Color(0xFFE5E5E5)
     val textGray = Color(0xFF8E8E93)
+
+
+    LaunchedEffect(registerState) {
+        if (registerState is UIState.Success) {
+            delay(1500)
+            navController.popBackStack()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -98,7 +114,7 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Input 1: Nombres y Apellidos
+                // Input 1 Nombres y Apellidos
                 OutlinedTextField(
                     value = nombresApellidos,
                     onValueChange = { nombresApellidos = it },
@@ -110,7 +126,7 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Input 2: DNI con teclado numérico obligado
+                // Input 2 DNI con teclado numérico obligado
                 OutlinedTextField(
                     value = dni,
                     onValueChange = { dni = it },
@@ -123,7 +139,7 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Input 3: Teléfono con teclado telefónico
+                // Input 3 Teléfono con teclado telefónico
                 OutlinedTextField(
                     value = telefono,
                     onValueChange = { telefono = it },
@@ -136,7 +152,7 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Input 4: Correo Electrónico
+                // Input 4 Correo Electrónico
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -149,7 +165,7 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Input 5: Contraseña enmascarada
+                // Input 5 Contraseña enmascarada
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -163,7 +179,7 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Input 6: Confirmación de contraseña enmascarada
+                // Input 6 Confirmación de contraseña enmascarada
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
@@ -177,18 +193,68 @@ fun RegistrarSocioView(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Botón final para ejecutar la acción de creación de cuenta
+
+                if (validationError.isNotEmpty() || registerState is UIState.Error) {
+                    Text(
+                        text = if (validationError.isNotEmpty()) validationError else (registerState as UIState.Error).message,
+                        color = Color.Red,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+
+                if (registerState is UIState.Success) {
+                    Text(
+                        text = "registro correcto",
+                        color = primaryColor,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+
                 Button(
                     onClick = {
-                        navController.popBackStack()
+                        validationError = ""
+                        
+
+                        if (nombresApellidos.isEmpty() || dni.isEmpty() || telefono.isEmpty() || 
+                            email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                            validationError = "Falta llenar todos los campos obligatorios"
+                            return@Button
+                        }
+
+                        if (password != confirmPassword) {
+                            validationError = "Las contraseñas no coinciden"
+                            return@Button
+                        }
+
+                        viewModel.sendRegister(
+                            RegisterSocio(
+                                email = email,
+                                name = nombresApellidos,
+                                dni = dni,
+                                phone = telefono,
+                                password = password
+                            )
+                        )
                     },
+                    enabled = registerState !is UIState.Loading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = primaryColor)
                 ) {
-                    Text(text = "REGISTRARSE", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    if (registerState is UIState.Loading) {
+                        CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                    } else {
+                        Text(text = "REGISTRARSE", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
