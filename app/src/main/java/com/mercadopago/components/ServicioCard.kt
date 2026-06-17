@@ -104,7 +104,9 @@ fun ServicioCard(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 OutlinedButton(
-                    onClick = { },
+                    onClick = {
+                        navController.navigate("crear-servicio?servicioId=${servicio.id}")
+                    },
                     shape = RoundedCornerShape(50),
                     border = BorderStroke(1.dp, Color(0xFF27D3BE)),
                     colors = ButtonDefaults.outlinedButtonColors(
