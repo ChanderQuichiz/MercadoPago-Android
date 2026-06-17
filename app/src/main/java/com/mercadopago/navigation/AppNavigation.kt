@@ -67,8 +67,9 @@ fun AppNavigation() {
         composable(Screen.PuestosDisponibles.route) {
             PuestosDisponiblesView(navController)
         }
-        composable(Screen.CrearServicio.route) {
-            CrearServicioView(navController)
+        composable(Screen.CrearServicio.route) { backStackEntry ->
+            val servicioId = backStackEntry.arguments?.getString("servicioId")?.toIntOrNull()
+            CrearServicioView(navController, updateServicioId = servicioId)
         }
     }
 }
