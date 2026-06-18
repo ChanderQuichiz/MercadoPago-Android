@@ -40,6 +40,16 @@ class PuestoRepository {
         }
     }
 
+    suspend fun getPuestosDisponibles(): Result<List<PuestoCardModel>> = withContext(
+        Dispatchers.IO
+    ) {
+        try {
+            Result.success(puesto.getPuestosDisponibles())
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "No se pudieron cargar los puestos disponibles"))
+        }
+    }
+
     suspend fun getPuestoById(id: Int): Result<PuestoCardModel> = withContext(
         Dispatchers.IO){
         try {

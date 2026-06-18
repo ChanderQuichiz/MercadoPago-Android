@@ -16,6 +16,9 @@ interface PuestoService {
     @GET("puestos/{id}")
     suspend fun getPuestoById(@Path("id") id: Int): PuestoCardModel
 
+    @GET("puestos/disponibles")
+    suspend fun getPuestosDisponibles(): List<PuestoCardModel>
+
     @POST("puestos/create")
     suspend fun createPuesto(@Body createPuestoRequest: PuestoCardModel): PuestoCardModel
 

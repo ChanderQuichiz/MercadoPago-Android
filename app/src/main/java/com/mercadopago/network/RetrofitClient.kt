@@ -2,6 +2,7 @@ package com.mercadopago.network
 
 import com.mercadopago.services.AuthService
 import com.mercadopago.services.PuestoService
+import com.mercadopago.services.ReporteService
 import com.mercadopago.services.ServicioService
 import com.mercadopago.services.UserService
 import kotlinx.serialization.json.Json
@@ -53,5 +54,9 @@ object RetrofitClient {
 
     val solicitud: SolicitudService by lazy {
         retrofit.create(SolicitudService::class.java)
+    }
+
+    val reporte: ReporteService by lazy {
+        retrofit.create(ReporteService::class.java)
     }
 }
