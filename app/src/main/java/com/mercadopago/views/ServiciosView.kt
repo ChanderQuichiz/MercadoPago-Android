@@ -210,6 +210,8 @@ fun ServiciosView(
                         }
                     }
                 }
+
+                UIState.Idle -> TODO()
             }
         }
     }
