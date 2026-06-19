@@ -2,6 +2,8 @@ package com.mercadopago.services
 
 import com.mercadopago.models.PageResponse
 import com.mercadopago.models.ServicioModel
+import com.mercadopago.models.ServicioRequestModel
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,13 +17,13 @@ interface ServicioService {
     suspend fun getServicioById(@Path("id") id: Int): ServicioModel
 
     @POST("servicios/create")
-    suspend fun createServicio(@Body servicio: ServicioModel): ServicioModel
+    suspend fun createServicio(@Body servicio: ServicioRequestModel): ResponseBody
 
     @PUT("servicios/update/{id}")
     suspend fun updateServicio(
         @Path("id") id: Int,
-        @Body servicio: ServicioModel
-    ): ServicioModel
+        @Body servicio: ServicioRequestModel
+    ): ResponseBody
 
     @GET("servicios/search")
     suspend fun searchServicio(@QueryMap params: Map<String, String>): PageResponse<ServicioModel>

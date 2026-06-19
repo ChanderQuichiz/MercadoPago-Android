@@ -80,6 +80,9 @@ fun CrearServicioView(
 
     LaunchedEffect(createServicioState, updateServicioState) {
         if (createServicioState is UIState.Success || updateServicioState is UIState.Success) {
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set("servicios_refresh", true)
             navController.popBackStack()
         }
     }
@@ -119,7 +122,7 @@ fun CrearServicioView(
 
             Text(
                 text = if (updateServicioId != null) "EDITAR SERVICIO" else "CREAR SERVICIO",
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.Monospace
             )

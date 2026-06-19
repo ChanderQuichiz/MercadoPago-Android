@@ -19,6 +19,10 @@ class PuestoViewModel: ViewModel() {
 
     val puestos: StateFlow<UIState<List<PuestoCardModel>>> = _puestos.asStateFlow()
 
+    private val _puestosDisponibles = MutableStateFlow<UIState<List<PuestoCardModel>>>(UIState.Idle)
+    val puestosDisponibles: StateFlow<UIState<List<PuestoCardModel>>> =
+        _puestosDisponibles.asStateFlow()
+
 
     private val _createPuesto = MutableStateFlow<UIState<PuestoCardModel>>(UIState.Loading)
     val createPuesto: StateFlow<UIState<PuestoCardModel>> = _createPuesto.asStateFlow()
@@ -78,6 +82,19 @@ class PuestoViewModel: ViewModel() {
 
         }
         
+    }
+
+    fun getPuestosDisponibles() {
+        viewModelScope.launch {
+            _puestosDisponibles.value = UIState.Loading
+            puestoRepository.getPuestosDisponibles()
+                .onSuccess {
+                    _puestosDisponibles.value = UIState.Success(it)
+                }
+                .onFailure {
+                    _puestosDisponibles.value = UIState.Error(it.message ?: "Error desconocido")
+                }
+        }
     }
 
 
