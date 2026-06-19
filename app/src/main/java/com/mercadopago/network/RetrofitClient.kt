@@ -5,6 +5,7 @@ import com.mercadopago.services.PuestoService
 import com.mercadopago.services.ReporteService
 import com.mercadopago.services.ServicioService
 import com.mercadopago.services.UserService
+import com.mercadopago.services.DeudaService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -58,5 +59,7 @@ object RetrofitClient {
 
     val reporte: ReporteService by lazy {
         retrofit.create(ReporteService::class.java)
+    val deuda: DeudaService by lazy {
+        retrofit.create(DeudaService::class.java)
     }
 }
