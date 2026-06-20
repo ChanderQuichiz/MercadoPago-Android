@@ -19,5 +19,5 @@ sealed class Screen(val route: String) {
 
     object EnviarSolicitud: Screen("enviar-solicitud?puestoId={puestoId}")
     object PuestosDisponibles: Screen("puestos-disponibles")
-
+    object MisPuestos: Screen("mis-puestos")
 }

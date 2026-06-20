@@ -131,6 +131,13 @@ fun DetailedDrawer(
                                 )
                             } else {
                                 NavigationDrawerItem(
+                                    label = { Text("Mis puestos") },
+                                    selected = false,
+                                    onClick = { navController.navigate("mis-puestos") }
+                                )
+
+
+                                NavigationDrawerItem(
                                     label = { Text("Puestos Disponibles") },
                                     selected = false,
                                     onClick = { navController.navigate("puestos-disponibles") }

@@ -157,7 +157,8 @@ Column(
                                     .height(80.dp)
                                 , horizontalArrangement = Arrangement.Center
 
-                            ){
+                            )
+                            {
 
                                 Row(
                                     modifier = Modifier.fillMaxWidth(0.5f)

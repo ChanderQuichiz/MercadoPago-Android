@@ -1,5 +1,7 @@
 package com.mercadopago.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,10 +17,12 @@ import com.mercadopago.views.RegistrarSocioView
 import com.mercadopago.views.SociosView
 import com.mercadopago.views.DeudasAdminView
 import com.mercadopago.views.EnviarSolicitudView
+import com.mercadopago.views.MisPuestosScreen
 import com.mercadopago.views.PuestosDisponiblesView
 import com.mercadopago.views.ReportesView
 import com.mercadopago.views.ServiciosView
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -71,6 +75,9 @@ fun AppNavigation() {
         composable(Screen.CrearServicio.route) { backStackEntry ->
             val servicioId = backStackEntry.arguments?.getString("servicioId")?.toIntOrNull()
             CrearServicioView(navController, updateServicioId = servicioId)
+        }
+        composable(Screen.MisPuestos.route) {
+            MisPuestosScreen(navController)
         }
     }
 }

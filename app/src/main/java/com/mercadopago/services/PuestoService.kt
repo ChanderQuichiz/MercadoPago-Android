@@ -1,8 +1,8 @@
 package com.mercadopago.services
 
+import com.mercadopago.models.MisPuestoDto
 import com.mercadopago.models.PageResponse
 import com.mercadopago.models.PuestoCardModel
-import com.mercadopago.models.PuestoFilterDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -29,4 +29,8 @@ interface PuestoService {
     suspend fun searchPuesto(
         @QueryMap params: Map<String, String>
     ): PageResponse<PuestoCardModel>
+
+    @GET("/puestos/mis-puestos")
+    suspend fun getMisPuestos(): List<MisPuestoDto>
+
 }

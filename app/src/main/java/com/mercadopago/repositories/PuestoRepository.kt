@@ -1,6 +1,7 @@
 package com.mercadopago.repositories
 
 import com.mercadopago.mapper.toQueryMap
+import com.mercadopago.models.MisPuestoDto
 import com.mercadopago.models.PageResponse
 import com.mercadopago.models.PuestoCardModel
 import com.mercadopago.models.PuestoFilterDto
@@ -59,6 +60,13 @@ class PuestoRepository {
         }
     }
 
-
+    suspend fun getMisPuestos(): Result<List<MisPuestoDto>> = withContext(
+        Dispatchers.IO){
+        try {
+            Result.success( puesto.getMisPuestos())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
 }

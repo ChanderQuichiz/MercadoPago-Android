@@ -59,6 +59,7 @@ object RetrofitClient {
 
     val reporte: ReporteService by lazy {
         retrofit.create(ReporteService::class.java)
+    }
     val deuda: DeudaService by lazy {
         retrofit.create(DeudaService::class.java)
     }

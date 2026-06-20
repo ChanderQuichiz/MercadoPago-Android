@@ -2,6 +2,7 @@ package com.mercadopago.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mercadopago.models.MisPuestoDto
 import com.mercadopago.models.PuestoCardModel
 import com.mercadopago.models.PuestoFilterDto
 import com.mercadopago.network.UIState
@@ -37,8 +38,13 @@ class PuestoViewModel: ViewModel() {
     val getPuestoById: StateFlow<UIState<PuestoCardModel>> = _getPuestoById.asStateFlow()
 
 
+    val _misPuestos = MutableStateFlow<UIState<List<MisPuestoDto>>>(UIState.Loading)
+    val misPuestos: StateFlow<UIState<List<MisPuestoDto>>> = _misPuestos.asStateFlow()
+
+
     init {
         searchPuesto(PuestoFilterDto("", "", "Disponible", com.mercadopago.models.Paginator(0, 50)))
+
     }
 
 
@@ -81,7 +87,7 @@ class PuestoViewModel: ViewModel() {
                 }
 
         }
-        
+
     }
 
     fun getPuestosDisponibles() {
@@ -107,6 +113,20 @@ class PuestoViewModel: ViewModel() {
                 }
                 .onFailure {
                     _getPuestoById.value = UIState.Error(it.message ?: "Error desconocido")
+                }
+        }
+    }
+
+
+    fun getMisPuestos() {
+        viewModelScope.launch {
+            _misPuestos.value = UIState.Loading
+            puestoRepository.getMisPuestos()
+                .onSuccess {
+                    _misPuestos.value = UIState.Success(it)
+                }
+                .onFailure {
+                    _misPuestos.value = UIState.Error(it.message ?: "Error desconocido")
                 }
         }
     }
