@@ -159,10 +159,11 @@ Column(
                                     .height(80.dp)
                                 , horizontalArrangement = Arrangement.Center
 
-                            ){
+                            )
+                            {
 
                                 Row(
-                                    modifier = Modifier.fillMaxWidth(0.5f)
+                                    modifier = Modifier.fillMaxWidth(0.6f)
                                     , verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column(

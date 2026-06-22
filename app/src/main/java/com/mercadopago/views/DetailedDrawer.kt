@@ -34,7 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.Payments
-import androidx.compose.material.icons.filled.Assignment
+import androidx.compose.material.icons.automirrored.filled.Assignment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -115,6 +115,12 @@ fun DetailedDrawer(
                                     )
                                     Spacer(Modifier.height(6.dp))
                                     NavigationDrawerItem(
+                                        label = { Text("Solicitudes") },
+                                        selected = false,
+                                        onClick = { navController.navigate("solicitudes-pendientes") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
                                         label = { Text("Servicios") },
                                         selected = false,
                                         onClick = { navController.navigate("servicios") }
@@ -140,16 +146,17 @@ fun DetailedDrawer(
                                     Spacer(Modifier.height(6.dp))
                                     NavigationDrawerItem(
                                         label = { Text("Contratos") },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.Default.Assignment,
-                                                contentDescription = null
-                                            )
-                                        },
+
                                         selected = false,
                                         onClick = { navController.navigate("contratos") }
                                     )
                                 } else {
+                                    NavigationDrawerItem(
+                                        label = { Text("Mis Puestos") },
+                                        selected = false,
+                                        onClick = { navController.navigate("mis-puestos") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
                                     NavigationDrawerItem(
                                         label = { Text("Puestos Disponibles") },
                                         icon = {
@@ -208,7 +215,7 @@ fun DetailedDrawer(
                                     Icon(
                                         imageVector = Icons.Default.AccountCircle,
                                         contentDescription = null,
-                                        tint =  profileTextColor,
+                                        tint = profileTextColor,
                                         modifier = Modifier.size(60.dp)
                                     )
                                     Spacer(Modifier.width(12.dp))

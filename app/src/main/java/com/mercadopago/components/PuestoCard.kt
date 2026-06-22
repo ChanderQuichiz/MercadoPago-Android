@@ -2,9 +2,9 @@ package com.mercadopago.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Store
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -150,7 +150,7 @@ fun PuestoCard(
                         Spacer(modifier = Modifier.height(6.dp))
 
                         Text(
-                            text = "S/${"%.2f".format(puesto.precioBaseMensual.toDouble())}",
+                            text = "S/${"%.2f".format(puesto.total)}",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily.Monospace
@@ -160,7 +160,7 @@ fun PuestoCard(
 
                         OutlinedButton(
                             onClick = {
-                                navController.navigate("enviar-solicitud")
+                                navController.navigate("enviar-solicitud?puestoId=${puesto.id}")
                             },
                             shape = RoundedCornerShape(50),
                             border = BorderStroke(1.dp, Color(0xFF27D3BE)),
@@ -213,11 +213,11 @@ fun PuestoCard(
             }
 
             // Flecha derecha
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Detalle",
-                modifier = Modifier.size(28.dp)
-            )
+//            Icon(
+//                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+//                contentDescription = "Detalle",
+//                modifier = Modifier.size(28.dp)
+//            )
         }
     }
 }

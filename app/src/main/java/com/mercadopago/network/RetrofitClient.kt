@@ -2,6 +2,7 @@ package com.mercadopago.network
 
 import com.mercadopago.services.AuthService
 import com.mercadopago.services.PuestoService
+import com.mercadopago.services.ReporteService
 import com.mercadopago.services.ServicioService
 import com.mercadopago.services.UserService
 import com.mercadopago.services.DeudaService
@@ -21,7 +22,7 @@ private val json = Json {
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://192.168.18.109:8080/"
+    private const val BASE_URL = "http://10.0.2.2:8080/"
 
     private val client = OkHttpClient.Builder()
         .cookieJar(CookieManager())
@@ -58,6 +59,9 @@ object RetrofitClient {
         retrofit.create(SolicitudService::class.java)
     }
 
+    val reporte: ReporteService by lazy {
+        retrofit.create(ReporteService::class.java)
+    }
     val deuda: DeudaService by lazy {
         retrofit.create(DeudaService::class.java)
     }
