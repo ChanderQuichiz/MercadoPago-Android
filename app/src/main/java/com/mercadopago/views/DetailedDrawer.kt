@@ -34,7 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.Payments
-import androidx.compose.material.icons.filled.Assignment
+import androidx.compose.material.icons.automirrored.filled.Assignment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,62 +103,6 @@ fun DetailedDrawer(
                                     color = Color(0XFF35C0AB),
                                     fontWeight = FontWeight.ExtraBold,
                                     letterSpacing = 1.sp
-                            Spacer(Modifier.height(12.dp))
-                            Text(
-                                "MERCADOPAGO",
-                                modifier = Modifier.padding(16.dp),
-                                style = MaterialTheme.typography.titleLarge,
-                                fontFamily = FontFamily(Font(R.font.changa_medium)),
-                                color = Color(0XFF35C0AB),
-                                fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 1.sp
-                            )
-                            HorizontalDivider()
-
-                            if (me.role == "ADMIN") {
-                                NavigationDrawerItem(
-                                    label = { Text("Reportes") },
-                                    selected = false,
-                                    onClick = { navController.navigate("reportes") }
-                                )
-                                NavigationDrawerItem(
-                                    label = { Text("Servicios") },
-                                    selected = false,
-                                    onClick = { navController.navigate("servicios") }
-                                )
-                                NavigationDrawerItem(
-                                    label = { Text("Puestos") },
-                                    selected = false,
-                                    onClick = { navController.navigate("puestos") }
-                                )
-                                NavigationDrawerItem(
-                                    label = { Text("Deudas") },
-                                    selected = false,
-                                    onClick = { navController.navigate("deudas") }
-                                )
-                                NavigationDrawerItem(
-                                    label = { Text("Socios") },
-                                    selected = false,
-                                    onClick = { navController.navigate("socios") }
-                                )
-                            } else {
-                                NavigationDrawerItem(
-                                  label = { Text("Mis Puestos") },
-                                  selected = false,
-                                   onClick = { navController.navigate("mis-puestos") }
-                                )
-                                Spacer(Modifier.height(6.dp))
-
-
-                                NavigationDrawerItem(
-                                    label = { Text("Puestos Disponibles") },
-                                    selected = false,
-                                    onClick = { navController.navigate("puestos-disponibles") }
-                                )
-                                NavigationDrawerItem(
-                                    label = { Text("Mis Solicitudes") },
-                                    selected = false,
-                                    onClick = { navController.navigate("mis-solicitudes") }
                                 )
                                 HorizontalDivider()
                                 Spacer(Modifier.height(12.dp))
@@ -198,7 +142,7 @@ fun DetailedDrawer(
                                         label = { Text("Contratos") },
                                         icon = {
                                             Icon(
-                                                imageVector = Icons.Default.Assignment,
+                                                imageVector = Icons.AutoMirrored.Filled.Assignment,
                                                 contentDescription = null
                                             )
                                         },
@@ -206,6 +150,12 @@ fun DetailedDrawer(
                                         onClick = { navController.navigate("contratos") }
                                     )
                                 } else {
+                                    NavigationDrawerItem(
+                                        label = { Text("Mis Puestos") },
+                                        selected = false,
+                                        onClick = { navController.navigate("mis-puestos") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
                                     NavigationDrawerItem(
                                         label = { Text("Puestos Disponibles") },
                                         icon = {
@@ -264,7 +214,7 @@ fun DetailedDrawer(
                                     Icon(
                                         imageVector = Icons.Default.AccountCircle,
                                         contentDescription = null,
-                                        tint =  profileTextColor,
+                                        tint = profileTextColor,
                                         modifier = Modifier.size(60.dp)
                                     )
                                     Spacer(Modifier.width(12.dp))
