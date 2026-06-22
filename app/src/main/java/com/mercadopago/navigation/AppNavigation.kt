@@ -2,6 +2,8 @@ package com.mercadopago.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -21,6 +23,7 @@ import com.mercadopago.views.SociosView
 import com.mercadopago.views.MisDeudasView
 import com.mercadopago.views.DeudasAdminView
 import com.mercadopago.views.EnviarSolicitudView
+import com.mercadopago.views.MisPuestosScreen
 import com.mercadopago.views.PuestosDisponiblesView
 import com.mercadopago.views.ReportesView
 import com.mercadopago.views.ServiciosView
@@ -33,6 +36,7 @@ import com.mercadopago.views.RealizarPagoView
 import com.mercadopago.views.PagoExitosoView
 import com.mercadopago.views.ContratosView
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -118,20 +122,24 @@ fun AppNavigation() {
         }
 
         composable(Screen.Reportes.route) {
-            ReportesView(navController, userViewModel = userViewModel)
+            ReportesView(navController)
         }
         composable(Screen.Servicios.route) {
             ServiciosView(navController, userViewModel = userViewModel)
         }
-        composable(Screen.EnviarSolicitud.route) {
-            EnviarSolicitudView(navController)
+        composable(Screen.EnviarSolicitud.route) { backStackEntry ->
+            val puestoId = backStackEntry.arguments?.getString("puestoId")?.toIntOrNull()
+            EnviarSolicitudView(navController, puestoId = puestoId)
         }
         composable(Screen.PuestosDisponibles.route) {
-            PuestosDisponiblesView(navController, userViewModel = userViewModel)
+            PuestosDisponiblesView(navController)
         }
         composable(Screen.CrearServicio.route) { backStackEntry ->
             val servicioId = backStackEntry.arguments?.getString("servicioId")?.toIntOrNull()
             CrearServicioView(navController, updateServicioId = servicioId)
+        }
+        composable(Screen.MisPuestos.route) {
+            MisPuestosScreen(navController)
         }
     }
 }

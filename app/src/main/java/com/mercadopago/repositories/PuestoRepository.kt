@@ -1,6 +1,7 @@
 package com.mercadopago.repositories
 
 import com.mercadopago.mapper.toQueryMap
+import com.mercadopago.models.MisPuestoDto
 import com.mercadopago.models.PageResponse
 import com.mercadopago.models.PuestoCardModel
 import com.mercadopago.models.PuestoFilterDto
@@ -40,6 +41,16 @@ class PuestoRepository {
         }
     }
 
+    suspend fun getPuestosDisponibles(): Result<List<PuestoCardModel>> = withContext(
+        Dispatchers.IO
+    ) {
+        try {
+            Result.success(puesto.getPuestosDisponibles())
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "No se pudieron cargar los puestos disponibles"))
+        }
+    }
+
     suspend fun getPuestoById(id: Int): Result<PuestoCardModel> = withContext(
         Dispatchers.IO){
         try {
@@ -49,6 +60,13 @@ class PuestoRepository {
         }
     }
 
-
+    suspend fun getMisPuestos(): Result<List<MisPuestoDto>> = withContext(
+        Dispatchers.IO){
+        try {
+            Result.success( puesto.getMisPuestos())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
 }

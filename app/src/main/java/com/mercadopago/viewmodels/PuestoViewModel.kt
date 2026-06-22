@@ -2,6 +2,7 @@ package com.mercadopago.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mercadopago.models.MisPuestoDto
 import com.mercadopago.models.PuestoCardModel
 import com.mercadopago.models.PuestoFilterDto
 import com.mercadopago.network.UIState
@@ -19,6 +20,10 @@ class PuestoViewModel: ViewModel() {
 
     val puestos: StateFlow<UIState<List<PuestoCardModel>>> = _puestos.asStateFlow()
 
+    private val _puestosDisponibles = MutableStateFlow<UIState<List<PuestoCardModel>>>(UIState.Idle)
+    val puestosDisponibles: StateFlow<UIState<List<PuestoCardModel>>> =
+        _puestosDisponibles.asStateFlow()
+
 
     private val _createPuesto = MutableStateFlow<UIState<PuestoCardModel>>(UIState.Loading)
     val createPuesto: StateFlow<UIState<PuestoCardModel>> = _createPuesto.asStateFlow()
@@ -33,8 +38,13 @@ class PuestoViewModel: ViewModel() {
     val getPuestoById: StateFlow<UIState<PuestoCardModel>> = _getPuestoById.asStateFlow()
 
 
+    val _misPuestos = MutableStateFlow<UIState<List<MisPuestoDto>>>(UIState.Loading)
+    val misPuestos: StateFlow<UIState<List<MisPuestoDto>>> = _misPuestos.asStateFlow()
+
+
     init {
         searchPuesto(PuestoFilterDto("", "", "Disponible", com.mercadopago.models.Paginator(0, 50)))
+
     }
 
 
@@ -77,7 +87,20 @@ class PuestoViewModel: ViewModel() {
                 }
 
         }
-        
+
+    }
+
+    fun getPuestosDisponibles() {
+        viewModelScope.launch {
+            _puestosDisponibles.value = UIState.Loading
+            puestoRepository.getPuestosDisponibles()
+                .onSuccess {
+                    _puestosDisponibles.value = UIState.Success(it)
+                }
+                .onFailure {
+                    _puestosDisponibles.value = UIState.Error(it.message ?: "Error desconocido")
+                }
+        }
     }
 
 
@@ -90,6 +113,20 @@ class PuestoViewModel: ViewModel() {
                 }
                 .onFailure {
                     _getPuestoById.value = UIState.Error(it.message ?: "Error desconocido")
+                }
+        }
+    }
+
+
+    fun getMisPuestos() {
+        viewModelScope.launch {
+            _misPuestos.value = UIState.Loading
+            puestoRepository.getMisPuestos()
+                .onSuccess {
+                    _misPuestos.value = UIState.Success(it)
+                }
+                .onFailure {
+                    _misPuestos.value = UIState.Error(it.message ?: "Error desconocido")
                 }
         }
     }

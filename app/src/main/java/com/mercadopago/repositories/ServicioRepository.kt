@@ -4,6 +4,7 @@ import com.mercadopago.mapper.toQueryMap
 import com.mercadopago.models.PageResponse
 import com.mercadopago.models.ServicioFilter
 import com.mercadopago.models.ServicioModel
+import com.mercadopago.models.ServicioRequestModel
 import com.mercadopago.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,22 +20,24 @@ class ServicioRepository{
         }
     }
 
-    suspend fun createServicio(createServicio: ServicioModel): Result<ServicioModel> = withContext(
+    suspend fun createServicio(createServicio: ServicioModel): Result<Unit> = withContext(
         Dispatchers.IO
     ) {
         try {
-            Result.success(servicio.createServicio(createServicio))
+            servicio.createServicio(createServicio.toRequest()).close()
+            Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "No se pudo crear el servicio"))
         }
     }
 
-    suspend fun updateServicio(id: Int, updateServicio: ServicioModel): Result<ServicioModel> =
+    suspend fun updateServicio(id: Int, updateServicio: ServicioModel): Result<Unit> =
         withContext(Dispatchers.IO) {
             try {
-                Result.success(servicio.updateServicio(id, updateServicio))
+                servicio.updateServicio(id, updateServicio.toRequest()).close()
+                Result.success(Unit)
             } catch (e: Exception) {
-                Result.failure(e)
+                Result.failure(Exception(e.message ?: "No se pudo actualizar el servicio"))
             }
         }
 
@@ -48,5 +51,14 @@ class ServicioRepository{
     }
 
 
+}
+
+private fun ServicioModel.toRequest(): ServicioRequestModel {
+    return ServicioRequestModel(
+        nombre = nombre,
+        descripcion = descripcion,
+        precioMensual = precioMensual,
+        estado = estado
+    )
 }
 

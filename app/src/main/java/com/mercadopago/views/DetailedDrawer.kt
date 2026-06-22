@@ -103,6 +103,62 @@ fun DetailedDrawer(
                                     color = Color(0XFF35C0AB),
                                     fontWeight = FontWeight.ExtraBold,
                                     letterSpacing = 1.sp
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                "MERCADOPAGO",
+                                modifier = Modifier.padding(16.dp),
+                                style = MaterialTheme.typography.titleLarge,
+                                fontFamily = FontFamily(Font(R.font.changa_medium)),
+                                color = Color(0XFF35C0AB),
+                                fontWeight = FontWeight.ExtraBold,
+                                letterSpacing = 1.sp
+                            )
+                            HorizontalDivider()
+
+                            if (me.role == "ADMIN") {
+                                NavigationDrawerItem(
+                                    label = { Text("Reportes") },
+                                    selected = false,
+                                    onClick = { navController.navigate("reportes") }
+                                )
+                                NavigationDrawerItem(
+                                    label = { Text("Servicios") },
+                                    selected = false,
+                                    onClick = { navController.navigate("servicios") }
+                                )
+                                NavigationDrawerItem(
+                                    label = { Text("Puestos") },
+                                    selected = false,
+                                    onClick = { navController.navigate("puestos") }
+                                )
+                                NavigationDrawerItem(
+                                    label = { Text("Deudas") },
+                                    selected = false,
+                                    onClick = { navController.navigate("deudas") }
+                                )
+                                NavigationDrawerItem(
+                                    label = { Text("Socios") },
+                                    selected = false,
+                                    onClick = { navController.navigate("socios") }
+                                )
+                            } else {
+                                NavigationDrawerItem(
+                                  label = { Text("Mis Puestos") },
+                                  selected = false,
+                                   onClick = { navController.navigate("mis-puestos") }
+                                )
+                                Spacer(Modifier.height(6.dp))
+
+
+                                NavigationDrawerItem(
+                                    label = { Text("Puestos Disponibles") },
+                                    selected = false,
+                                    onClick = { navController.navigate("puestos-disponibles") }
+                                )
+                                NavigationDrawerItem(
+                                    label = { Text("Mis Solicitudes") },
+                                    selected = false,
+                                    onClick = { navController.navigate("mis-solicitudes") }
                                 )
                                 HorizontalDivider()
                                 Spacer(Modifier.height(12.dp))
