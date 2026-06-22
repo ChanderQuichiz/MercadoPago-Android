@@ -107,13 +107,13 @@ fun ReporteCard(
                 fontFamily = FontFamily.Monospace
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Detalle",
-                modifier = Modifier.size(28.dp)
-            )
+//            Spacer(modifier = Modifier.width(12.dp))
+//
+//            Icon(
+//                imageVector = Icons.Default.KeyboardArrowRight,
+//                contentDescription = "Detalle",
+//                modifier = Modifier.size(28.dp)
+//            )
         }
     }
 }

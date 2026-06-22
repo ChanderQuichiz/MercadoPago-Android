@@ -18,10 +18,10 @@ sealed class Screen(val route: String) {
     object Contratos: Screen("contratos")
 
 
-    object EnviarSolicitud: Screen("enviar-solicitud")
+    object EnviarSolicitud: Screen("enviar-solicitud?puestoId={puestoId}")
     object PuestosDisponibles: Screen("puestos-disponibles")
     object MisDeudas: Screen("mis-deudas")
     object RealizarPago: Screen("realizar-pago/{codigoDeuda}")
     object PagoExitoso: Screen("pago-exitoso")
-
+    object MisPuestos: Screen("mis-puestos")
 }

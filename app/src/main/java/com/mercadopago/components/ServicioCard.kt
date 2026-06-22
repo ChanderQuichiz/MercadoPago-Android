@@ -123,13 +123,13 @@ fun ServicioCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Ver detalle",
-                modifier = Modifier.size(28.dp)
-            )
+//            Spacer(modifier = Modifier.width(8.dp))
+//
+//            Icon(
+//                imageVector = Icons.Default.KeyboardArrowRight,
+//                contentDescription = "Ver detalle",
+//                modifier = Modifier.size(28.dp)
+//            )
         }
     }
 }
