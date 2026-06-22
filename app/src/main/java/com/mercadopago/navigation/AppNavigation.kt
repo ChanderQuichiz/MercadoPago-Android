@@ -35,6 +35,7 @@ import androidx.navigation.NavType
 import com.mercadopago.views.RealizarPagoView
 import com.mercadopago.views.PagoExitosoView
 import com.mercadopago.views.ContratosView
+import com.mercadopago.views.SolicitudesPendientesView
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -126,6 +127,9 @@ fun AppNavigation() {
         }
         composable(Screen.Servicios.route) {
             ServiciosView(navController, userViewModel = userViewModel)
+        }
+        composable(Screen.SolicitudesPendientes.route) {
+            SolicitudesPendientesView(navController, userViewModel = userViewModel)
         }
         composable(Screen.EnviarSolicitud.route) { backStackEntry ->
             val puestoId = backStackEntry.arguments?.getString("puestoId")?.toIntOrNull()

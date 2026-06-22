@@ -115,6 +115,12 @@ fun DetailedDrawer(
                                     )
                                     Spacer(Modifier.height(6.dp))
                                     NavigationDrawerItem(
+                                        label = { Text("Solicitudes") },
+                                        selected = false,
+                                        onClick = { navController.navigate("solicitudes-pendientes") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
                                         label = { Text("Servicios") },
                                         selected = false,
                                         onClick = { navController.navigate("servicios") }
@@ -140,12 +146,7 @@ fun DetailedDrawer(
                                     Spacer(Modifier.height(6.dp))
                                     NavigationDrawerItem(
                                         label = { Text("Contratos") },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.AutoMirrored.Filled.Assignment,
-                                                contentDescription = null
-                                            )
-                                        },
+
                                         selected = false,
                                         onClick = { navController.navigate("contratos") }
                                     )

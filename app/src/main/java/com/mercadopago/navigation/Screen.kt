@@ -14,6 +14,7 @@ sealed class Screen(val route: String) {
     object Deudas: Screen("deudas")
     object Reportes: Screen("reportes")
     object Servicios: Screen("servicios")
+    object SolicitudesPendientes: Screen("solicitudes-pendientes")
     object CrearServicio: Screen("crear-servicio?servicioId={servicioId}")
     object Contratos: Screen("contratos")
 

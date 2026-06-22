@@ -163,7 +163,7 @@ Column(
                             {
 
                                 Row(
-                                    modifier = Modifier.fillMaxWidth(0.5f)
+                                    modifier = Modifier.fillMaxWidth(0.6f)
                                     , verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column(
