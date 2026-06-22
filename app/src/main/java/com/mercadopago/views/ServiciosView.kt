@@ -49,10 +49,12 @@ import com.mercadopago.models.Paginator
 import com.mercadopago.models.ServicioFilter
 import com.mercadopago.network.UIState
 import com.mercadopago.viewmodels.ServicioViewModel
+import com.mercadopago.viewmodels.UserViewModel
 
 @Composable
 fun ServiciosView(
     navController: NavController,
+    userViewModel: UserViewModel,
     servicioViewModel: ServicioViewModel = viewModel()
 ) {
     val serviciosState by servicioViewModel.serviciosState.collectAsStateWithLifecycle()
@@ -89,7 +91,7 @@ fun ServiciosView(
         }
     }
 
-    DetailedDrawer(navController = navController) { padding ->
+    DetailedDrawer(navController = navController, userViewModel = userViewModel) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

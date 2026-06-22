@@ -3,6 +3,7 @@ package com.mercadopago.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mercadopago.models.DeudaDataTableModel
+import com.mercadopago.models.MisDeudasModel
 import com.mercadopago.network.UIState
 import com.mercadopago.repositories.DeudaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,12 @@ class DeudaViewModel : ViewModel() {
 
     private val _deudasState = MutableStateFlow<UIState<List<DeudaDataTableModel>>>(UIState.Idle)
     val deudasState: StateFlow<UIState<List<DeudaDataTableModel>>> = _deudasState.asStateFlow()
+
+    private val _misDeudasState = MutableStateFlow<UIState<List<MisDeudasModel>>>(UIState.Idle)
+    val misDeudasState: StateFlow<UIState<List<MisDeudasModel>>> = _misDeudasState.asStateFlow()
+
+    private val _pagoState = MutableStateFlow<UIState<Unit>>(UIState.Idle)
+    val pagoState: StateFlow<UIState<Unit>> = _pagoState.asStateFlow()
 
     init {
         getDeudas()
@@ -33,15 +40,35 @@ class DeudaViewModel : ViewModel() {
         }
     }
 
-    fun pagarDeuda(codigo: String) {
+    fun getMisDeudas(estado: String? = null) {
         viewModelScope.launch {
-            repository.pagarDeuda(codigo)
+            _misDeudasState.value = UIState.Loading
+            repository.getMisDeudasDataTable(estado)
                 .onSuccess {
-                    getDeudas() // Recargar lista tras pago
+                    _misDeudasState.value = UIState.Success(it)
                 }
                 .onFailure {
-                    // Manejar error si es necesario
+                    _misDeudasState.value = UIState.Error(it.message ?: "Error desconocido")
                 }
         }
+    }
+
+    fun pagarDeuda(codigo: String) {
+        viewModelScope.launch {
+            _pagoState.value = UIState.Loading
+            repository.pagarDeuda(codigo)
+                .onSuccess {
+                    _pagoState.value = UIState.Success(Unit)
+                    getDeudas()
+                    getMisDeudas()
+                }
+                .onFailure {
+                    _pagoState.value = UIState.Error(it.message ?: "No se pudo procesar el pago")
+                }
+        }
+    }
+
+    fun resetPagoState() {
+        _pagoState.value = UIState.Idle
     }
 }

@@ -20,11 +20,13 @@ import androidx.navigation.NavController
 import com.mercadopago.network.UIState
 import com.mercadopago.viewmodels.AuthViewModel
 import com.mercadopago.viewmodels.DeudaViewModel
+import com.mercadopago.viewmodels.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeudasAdminView(
     navController: NavController,
+    userViewModel: UserViewModel,
     authViewModel: AuthViewModel = viewModel(),
     deudaViewModel: DeudaViewModel = viewModel()
 ) {
@@ -35,7 +37,8 @@ fun DeudasAdminView(
     val deudasState by deudaViewModel.deudasState.collectAsStateWithLifecycle()
 
     DetailedDrawer(
-        navController = navController
+        navController = navController,
+        userViewModel = userViewModel
     ) { padding ->
 
         Column(

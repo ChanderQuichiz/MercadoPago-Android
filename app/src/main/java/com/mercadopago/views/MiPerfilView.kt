@@ -31,10 +31,12 @@ import com.mercadopago.network.SessionManager
 import com.mercadopago.viewmodels.UserViewModel
 
 @Composable
-fun MiPerfilView(navController : NavController){
-
+fun MiPerfilView(
+    navController : NavController,
+    userViewModel: UserViewModel
+){
     val me = SessionManager.me
-    DetailedDrawer( navController = navController ) { padding ->
+    DetailedDrawer( navController = navController, userViewModel = userViewModel ) { padding ->
 
         if(me != null) {
 

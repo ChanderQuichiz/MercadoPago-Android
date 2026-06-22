@@ -1,20 +1,20 @@
 package com.mercadopago.views
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +30,11 @@ import com.mercadopago.network.UIState
 import com.mercadopago.viewmodels.AuthViewModel
 import com.mercadopago.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.ui.draw.clip
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Storefront
+import androidx.compose.material.icons.filled.Payments
+import androidx.compose.material.icons.filled.Assignment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,21 +46,12 @@ fun DetailedDrawer(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    
-    // Observamos el token de forma reactiva
+
     val token by SessionManager.accessTokenFlow.collectAsStateWithLifecycle()
     val userState by userViewModel.meUIState.collectAsStateWithLifecycle()
 
-    // Cada vez que el token cambie (ej. tras login), pedimos el perfil
     LaunchedEffect(token) {
-        if (token != null && userState !is UIState.Success) {
-            userViewModel.getMe()
-        }
-    }
-
-
-    LaunchedEffect(token) {
-        if (token != null && userState !is UIState.Success) {
+        if (token != null) {
             userViewModel.getMe()
         }
     }
@@ -78,19 +74,36 @@ fun DetailedDrawer(
         }
         is UIState.Error -> {
             Text(text = "Error cargando perfil...", modifier = Modifier.clickable { userViewModel.getMe() })
-            LaunchedEffect(Unit) {
-            }
         }
         is UIState.Success -> {
             val me = state.data
+            val isDarkTheme = isSystemInDarkTheme()
+            val profileTextColor = if (isDarkTheme) Color.Black else Color.White
+
             ModalNavigationDrawer(
                 drawerContent = {
                     ModalDrawerSheet {
                         Column(
                             modifier = Modifier
+                                .fillMaxHeight()
                                 .padding(horizontal = 16.dp)
-                                .verticalScroll(rememberScrollState()),
+                                .padding(bottom = 20.dp)
                         ) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .verticalScroll(rememberScrollState())
+                            ) {
+                                Spacer(Modifier.height(12.dp))
+                                Text(
+                                    "MERCADOPAGO",
+                                    modifier = Modifier.padding(16.dp),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontFamily = FontFamily(Font(R.font.changa_medium)),
+                                    color = Color(0XFF35C0AB),
+                                    fontWeight = FontWeight.ExtraBold,
+                                    letterSpacing = 1.sp
+
                             Spacer(Modifier.height(12.dp))
                             Text(
                                 "MERCADOPAGO",
@@ -131,10 +144,13 @@ fun DetailedDrawer(
                                 )
                             } else {
                                 NavigationDrawerItem(
-                                    label = { Text("Mis puestos") },
-                                    selected = false,
-                                    onClick = { navController.navigate("mis-puestos") }
+                                
+                                NavigationDrawerItem(
+                                  label = { Text("Mis Puestos") },
+                                  selected = false,
+                                  onClick = { navController.navigate("mis-puestos") }
                                 )
+                                Spacer(Modifier.height(6.dp)) 
 
 
                                 NavigationDrawerItem(
@@ -146,69 +162,155 @@ fun DetailedDrawer(
                                     label = { Text("Mis Solicitudes") },
                                     selected = false,
                                     onClick = { navController.navigate("mis-solicitudes") }
+
                                 )
+                                HorizontalDivider()
+                                Spacer(Modifier.height(12.dp))
+
+                                if (me.role == "ADMIN") {
+                                    NavigationDrawerItem(
+                                        label = { Text("Reportes") },
+                                        selected = false,
+                                        onClick = { navController.navigate("reportes") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Servicios") },
+                                        selected = false,
+                                        onClick = { navController.navigate("servicios") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Puestos") },
+                                        selected = false,
+                                        onClick = { navController.navigate("puestos") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Deudas") },
+                                        selected = false,
+                                        onClick = { navController.navigate("deudas") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Socios") },
+                                        selected = false,
+                                        onClick = { navController.navigate("socios") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Contratos") },
+                                        icon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Assignment,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        selected = false,
+                                        onClick = { navController.navigate("contratos") }
+                                    )
+                                } else {
+                                    NavigationDrawerItem(
+                                        label = { Text("Puestos Disponibles") },
+                                        icon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Storefront,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        selected = false,
+                                        onClick = { navController.navigate("puestos-disponibles") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Mis Solicitudes") },
+                                        icon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Description,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        selected = false,
+                                        onClick = { navController.navigate("mis-solicitudes") }
+                                    )
+                                    Spacer(Modifier.height(6.dp))
+                                    NavigationDrawerItem(
+                                        label = { Text("Mis Deudas") },
+                                        icon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Payments,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        selected = false,
+                                        onClick = { navController.navigate("mis-deudas") }
+                                    )
+                                }
                             }
 
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                            NavigationDrawerItem(
-                                label = {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Image(
-                                            painter = painterResource(id = R.drawable.perfil),
-                                            contentDescription = "",
-                                            modifier = Modifier.size(60.dp)
-                                        )
-                                        Column {
-                                            Text(
-                                                me.name,
-                                                fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
-                                            )
-                                            Text(
-                                                me.role,
-                                                color = Color(0XFF35C0AB),
-                                                fontFamily = FontFamily(Font(R.font.changa_medium))
-                                            )
-                                        }
-                                    }
-                                },
-                                selected = false,
-                                onClick = {
-                                    navController.navigate("mi-perfil")
-                                }
-                            )
+                            HorizontalDivider()
 
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 12.dp, bottom = 4.dp)
                             ) {
-                                NavigationDrawerItem(
-                                    label = {
-                                        Text(
-                                            "Cerrar sesion",
-                                            color = Color(0XFFE12F2F),
-                                            fontFamily = FontFamily(Font(R.font.sansationbold)),
-                                            modifier = Modifier.fillMaxWidth(),
-                                            textAlign = TextAlign.Center
-                                        )
-                                    },
-                                    selected = false,
-                                    onClick = {
-                                        authViewModel.sendLogout()
-                                        SessionManager.accessToken = null
-                                        navController.navigate("login") {
-                                            popUpTo(0)
-                                        }
-                                    },
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
-                                        .background(
-                                            Color(0XFFDDDDDD),
-                                            RoundedCornerShape(30.dp)
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(20.dp))
+                                        .background(Color(0XFF35C0AB))
+                                        .clickable { navController.navigate("mi-perfil") }
+                                        .padding(12.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.AccountCircle,
+                                        contentDescription = null,
+                                        tint =  profileTextColor,
+                                        modifier = Modifier.size(60.dp)
+                                    )
+                                    Spacer(Modifier.width(12.dp))
+                                    Column {
+                                        Text(
+                                            me.name,
+                                            color = profileTextColor,
+                                            fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
                                         )
-                                        .height(40.dp)
+                                        Text(
+                                            me.role,
+                                            color = profileTextColor,
+                                            fontFamily = FontFamily(Font(R.font.changa_medium))
+                                        )
+                                    }
+                                }
+
+                                Spacer(Modifier.height(10.dp))
+
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
                                         .fillMaxWidth(0.8f)
-                                )
+                                        .clip(RoundedCornerShape(30.dp))
+                                        .background(Color(0XFFE12F2F))
+                                        .clickable {
+                                            authViewModel.sendLogout()
+                                            SessionManager.accessToken = null
+                                            navController.navigate("login-socio") {
+                                                popUpTo(0)
+                                            }
+                                        }
+                                        .height(40.dp)
+                                ) {
+                                    Text(
+                                        "Cerrar sesión",
+                                        color = Color.White,
+                                        fontFamily = FontFamily(Font(R.font.sansationbold)),
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
-                            Spacer(Modifier.height(12.dp))
                         }
                     }
                 },
@@ -219,9 +321,7 @@ fun DetailedDrawer(
                         TopAppBar(
                             title = {
                                 Text(
-                                    navController.currentBackStackEntry?.destination?.route?.split(
-                                        "/"
-                                    )[0].toString(),
+                                    formatRouteTitle(navController.currentBackStackEntry?.destination?.route),
                                     fontFamily = FontFamily(Font(R.font.changa_medium)),
                                     fontSize = 26.sp,
                                     fontWeight = FontWeight.Light
@@ -244,4 +344,12 @@ fun DetailedDrawer(
             }
         }
     }
+}
+
+fun formatRouteTitle(route: String?): String {
+    return route
+        ?.split("/")?.get(0)
+        ?.split("-")
+        ?.joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
+        ?: ""
 }
