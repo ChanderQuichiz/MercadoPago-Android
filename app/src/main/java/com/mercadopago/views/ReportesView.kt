@@ -24,11 +24,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mercadopago.components.ReporteCard
 import com.mercadopago.models.ReporteModel
+import com.mercadopago.viewmodels.UserViewModel
 
 
 @Composable
 fun ReportesView(
-    navController: NavController
+    navController: NavController,
+    userViewModel: UserViewModel
 ) {
     val reportes = List(5) {
         ReporteModel(
@@ -39,7 +41,7 @@ fun ReportesView(
         )
     }
 
-    DetailedDrawer (navController =navController) {
+    DetailedDrawer (navController = navController, userViewModel = userViewModel) {
 
         Column(
             modifier = Modifier

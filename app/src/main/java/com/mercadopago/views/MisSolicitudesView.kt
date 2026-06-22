@@ -46,13 +46,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
+import com.mercadopago.viewmodels.UserViewModel
 
 @Composable
 fun MisSolicitudesView(
     navController: NavController,
+    userViewModel: UserViewModel,
     solicitudViewModel: SolicitudViewModel = viewModel()
 ) {
-    DetailedDrawer(navController = navController) { padding ->
+    DetailedDrawer(navController = navController, userViewModel = userViewModel) { padding ->
 
         var tabState by remember { mutableIntStateOf(0) }
 

@@ -9,10 +9,10 @@ data class DeudaModel(
     val concepto: String? = null,
     val periodo: String,
     val monto: Double? = null,
-    val total: Double? = null, // Para DataTable
+    val total: Double? = null,
     val estado: String,
     val contratoId: Int? = null,
-    val emailSocio: String? = null, // Para DataTable
-    val codigoDeuda: String? = null, // Para DataTable
-    val codigoContrato: String? = null // Para DataTable
+    val emailSocio: String? = null,
+    val codigoDeuda: String? = null,
+    val codigoContrato: String? = null
 )

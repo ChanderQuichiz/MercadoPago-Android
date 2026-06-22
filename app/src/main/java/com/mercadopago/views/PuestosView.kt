@@ -52,16 +52,18 @@ import com.mercadopago.models.PuestoCardModel
 import com.mercadopago.models.PuestoFilterDto
 import com.mercadopago.network.UIState
 import com.mercadopago.viewmodels.PuestoViewModel
+import com.mercadopago.viewmodels.UserViewModel
 
 @Composable
 fun PuestosView(
 navController: NavController,
+userViewModel: UserViewModel,
 puestosViewModel: PuestoViewModel = PuestoViewModel()
 ){
         val puestosState = puestosViewModel.puestos.collectAsStateWithLifecycle()
 
 
-  DetailedDrawer(  navController = navController) {
+  DetailedDrawer(  navController = navController, userViewModel = userViewModel) {
      padding ->
 
         Column(

@@ -46,6 +46,9 @@ import androidx.navigation.NavController
 import com.mercadopago.R
 import com.mercadopago.network.UIState
 import com.mercadopago.viewmodels.AuthViewModel
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
 
 @Composable
 fun LoginAdminView(
@@ -62,7 +65,6 @@ fun LoginAdminView(
         mutableStateOf("")
     }
 
-    // Navigation logic handled via LaunchedEffect
     LaunchedEffect(accessSecretUIState) {
         if (accessSecretUIState is UIState.Success) {
             navController.navigate("puestos") {
@@ -99,11 +101,19 @@ fun LoginAdminView(
 
                 Spacer(modifier = Modifier.height(60.dp))
 
-                Image(
-                    painter = painterResource(id = R.drawable.admin_access),
-                    contentDescription = "",
-                    modifier = Modifier.size(100.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(90.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF35C0AB)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.admin_access),
+                        contentDescription = "",
+                        modifier = Modifier.size(70.dp)
+                    )
+                }
 
                 Text(
                     text = "       PANEL DE \n ADMINISTRACION",
@@ -116,39 +126,38 @@ fun LoginAdminView(
                 OutlinedTextField(
                     value = claveSecreta,
                     onValueChange = { claveSecreta = it },
-                    modifier = Modifier
-                        .width(360.dp)
-                        .background(Color(0XFFFCFAFA)),
+                    label = { Text("Clave secreta") },
                     placeholder = {
                         Text(
                             "Clave secreta",
-                            fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght)),
-                            color = Color(0, 0, 0, 80)
+                            fontFamily = FontFamily(Font(R.font.inclusivesans_variablefont_wght))
                         )
                     },
-                    shape = RoundedCornerShape(8.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = Color(0, 0, 0, 50),
-                        focusedBorderColor = Color(0xFF35C0AB),
-                    ),
+                    modifier = Modifier.width(360.dp),
+                    shape = RoundedCornerShape(12.dp),
                     singleLine = true,
+                    maxLines = 1,
                     visualTransformation = if (passwordVisible)
                         VisualTransformation.None
                     else
                         PasswordVisualTransformation(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFF35C0AB),
+                        unfocusedBorderColor = Color(0xFFE0E0E0),
+                        focusedLabelColor = Color(0xFF35C0AB)
+                    ),
                     trailingIcon = {
-                        IconButton(
-                            onClick = {
-                                passwordVisible = !passwordVisible
+                        if (claveSecreta.isNotEmpty()) {
+                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                Icon(
+                                    imageVector = if (passwordVisible)
+                                        Icons.Default.VisibilityOff
+                                    else
+                                        Icons.Default.Visibility,
+                                    contentDescription = null,
+                                    tint = Color.Gray
+                                )
                             }
-                        ) {
-                            Icon(
-                                imageVector = if (passwordVisible)
-                                    Icons.Default.Visibility
-                                else
-                                    Icons.Default.VisibilityOff,
-                                contentDescription = null
-                            )
                         }
                     }
                 )

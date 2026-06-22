@@ -27,7 +27,8 @@ import com.mercadopago.models.ServicioModel
 
 @Composable
 fun PuestosDisponiblesView(
-    navController: NavController
+    navController: NavController,
+    userViewModel: com.mercadopago.viewmodels.UserViewModel
 ) {
     val puestos = listOf(
         PuestoCardModel(
@@ -88,7 +89,8 @@ fun PuestosDisponiblesView(
         )
     )
 DetailedDrawer(
-    navController =navController
+    navController = navController,
+    userViewModel = userViewModel
 ) {
     paddingValues ->
     Column(
