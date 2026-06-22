@@ -156,7 +156,7 @@ fun ContratosView(
                             } else {
                                 state.data.forEach { pendiente ->
                                     ContratoPendienteCard(pendiente = pendiente, onActivarClick = {
-                                        // TODO: abrir flujo de activación (número de meses + imagen del contrato)
+                                        navController.navigate("activar-contrato-admin/${pendiente.codigoSolicitud}")
                                     })
                                 }
                             }
