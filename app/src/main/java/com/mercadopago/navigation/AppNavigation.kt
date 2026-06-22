@@ -181,6 +181,7 @@ fun AppNavigation() {
 
         composable(Screen.ContratoAdminExitoso.route) {
             ContratoAdminExitosoView(navController)
+        }
         composable(Screen.MisPuestos.route) {
             MisPuestosScreen(navController)
         }
