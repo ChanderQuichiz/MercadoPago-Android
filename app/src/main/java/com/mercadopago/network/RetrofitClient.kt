@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.mercadopago.services.SolicitudService
 import com.mercadopago.services.ContratoService
+import com.mercadopago.services.ContratoAdminService
 
 private val json = Json {
     ignoreUnknownKeys = true
@@ -67,5 +68,9 @@ object RetrofitClient {
 
     val contrato: ContratoService by lazy {
         retrofit.create(ContratoService::class.java)
+    }
+
+    val contratoAdmin: ContratoAdminService by lazy {
+        retrofit.create(ContratoAdminService::class.java)
     }
 }

@@ -35,6 +35,9 @@ import androidx.navigation.NavType
 import com.mercadopago.views.RealizarPagoView
 import com.mercadopago.views.PagoExitosoView
 import com.mercadopago.views.ContratosView
+import com.mercadopago.views.ActivarContratoAdminView
+import com.mercadopago.views.ContratoAdminExitosoView
+import com.mercadopago.viewmodels.ContratoAdminViewModel
 import com.mercadopago.views.SolicitudesPendientesView
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -42,6 +45,7 @@ import com.mercadopago.views.SolicitudesPendientesView
 fun AppNavigation() {
     val navController = rememberNavController()
     val userViewModel: UserViewModel = viewModel()
+    val contratoAdminViewModel: ContratoAdminViewModel = viewModel()
     val deudaViewModel: DeudaViewModel = viewModel()
 
     NavHost(
@@ -142,6 +146,41 @@ fun AppNavigation() {
             val servicioId = backStackEntry.arguments?.getString("servicioId")?.toIntOrNull()
             CrearServicioView(navController, updateServicioId = servicioId)
         }
+
+        composable(
+            route = Screen.ActivarContratoAdmin.route,
+            arguments = listOf(navArgument("codigoSolicitud") { type = NavType.StringType }),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(300)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(300)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(300)
+                )
+            }
+        ) { backStackEntry ->
+            val codigoSolicitud = backStackEntry.arguments?.getString("codigoSolicitud") ?: ""
+            ActivarContratoAdminView(navController, codigoSolicitud = codigoSolicitud, contratoViewModel = contratoAdminViewModel)
+        }
+
+        composable(Screen.ContratoAdminExitoso.route) {
+            ContratoAdminExitosoView(navController)
         composable(Screen.MisPuestos.route) {
             MisPuestosScreen(navController)
         }
