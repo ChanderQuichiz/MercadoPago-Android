@@ -64,7 +64,7 @@ fun ReportesView(
     LaunchedEffect(Unit) {
         reporteViewModel.generarReporteDiario(fecha)
     }
-
+    
     DetailedDrawer(navController = navController) { padding ->
         Column(
             modifier = Modifier

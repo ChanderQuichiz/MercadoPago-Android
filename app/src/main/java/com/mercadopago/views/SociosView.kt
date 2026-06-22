@@ -35,7 +35,7 @@ fun SociosView(
     navController: NavController,
     userViewModel: UserViewModel = viewModel()
 ) {
-    DetailedDrawer(navController = navController) { padding ->
+    DetailedDrawer(navController = navController, userViewModel = userViewModel) { padding ->
 
         var filtroExpandido by remember { mutableStateOf(false) }
 
