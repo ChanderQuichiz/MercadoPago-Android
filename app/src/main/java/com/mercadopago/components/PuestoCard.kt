@@ -199,16 +199,27 @@ fun PuestoCard(
 
                     Spacer(modifier = Modifier.width(18.dp))
 
-                    puesto.servicios.forEach { servicio ->
-                        Text(
-                            text = servicio.nombre.uppercase(),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Gray,
-                            fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
+                    Column {
+                        puesto.servicios.chunked(3).forEach { filaServicios ->
+                            Row {
+                                filaServicios.forEach { servicio ->
+                                    Text(
+                                        text = servicio.nombre.uppercase(),
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Gray,
+                                        fontFamily = FontFamily.Monospace,
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                }
+                            }
+                        }
                     }
+
+
+
+
+
                 }
             }
 
